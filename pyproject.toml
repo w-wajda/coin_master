@@ -1,0 +1,14 @@
+[tool.poetry]
+name = "coin-master"
+version = "0.1.0"
+description = ""
+authors = ["Wioletta Wajda <wioletta.wajda@devsoft.pl>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
