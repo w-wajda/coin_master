@@ -1,0 +1,105 @@
+version: "3.9"
+services:
+  db:
+    image: postgis/postgis:16-3.4
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./share/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - .datastore/postgres:/var/lib/postgresql/data
+    networks:
+      - coin-master-network
+
+  minio:
+    image: minio/minio
+    environment:
+      MINIO_ROOT_USER: minio123
+      MINIO_ROOT_PASSWORD: minio123
+      MINIO_SERVER_URL: "http://localhost:9000"
+      MINIO_CONSOLE_ADDRESS: ":9001"
+    ports:
+      - '9000:9000'
+      - '35193:35193'
+      - '9001:9001'
+    volumes:
+      - .datastore/minio:/data
+    command: server /data
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:9000/minio/health/live" ]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+    networks:
+      - coin-master-network
+
+  redis:
+    image: redis
+    ports:
+      - "6379:6379"
+    networks:
+      - coin-master-network
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: rabbitmq
+      RABBITMQ_DEFAULT_PASS: rabbitmq
+    volumes:
+      - .datastore/rabbitmq:/var/lib/rabbitmq
+    networks:
+      - coin-master-network
+
+  mailhog:
+    image: mailhog/mailhog
+    ports:
+      - "8025:8025"
+      - "1025:1025"
+    networks:
+      - coin-master-network
+
+  api:
+    build:
+      context: .
+      dockerfile: deployment/Dockerfile
+    command: dev
+    environment:
+      PORT: 8000
+      DATABASE_URL: "postgresql+asyncpg://coin-master:Wlodarzewska83@postgres:5432/coin-master"
+      REDIS_URL: "redis://redis:6379/1"
+      HOST: 0.0.0.0
+      AWS_ACCESS_KEY: minio123
+      AWS_ACCESS_KEY_SECRET: minio123
+      AWS_ENDPOINT_URL: "http://minio:9000/"
+      AWS_S3_BUCKET_URL: "https://img.coin.local/coin-master"
+      AWS_S3_BUCKET_NAME: coins
+    volumes:
+      - .:/app
+    networks:
+      - -master-network
+
+  nginx:
+    image: nginx:latest
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./scripts/nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./scripts/nginx/sites-enabled/:/etc/nginx/sites-enabled/:ro
+      - ./scripts/nginx/common/:/etc/nginx/common/:ro
+      - .datastore/nginx/certs/:/etc/nginx/ssl/:ro
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    networks:
+      - coin-master-network
+
+networks:
+  glm-network:
+    name: coin-master-network
+    external: true
