@@ -105,6 +105,19 @@ exclude_lines = [
 [tool.coverage.html]
 directory = "htmlcov"
 
+[tool.black]
+line-length = 120
+exclude = '''
+
+(
+  /(
+    | \.git
+    | migrations
+    | \.env
+  )/
+)
+'''
+
 [tool.isort]
 line_length = 120
 multi_line_output = 3
@@ -115,6 +128,8 @@ include_trailing_comma = true
 lines_after_imports = 2
 combine_as_imports = true
 sections = "FUTURE,STDLIB,THIRDPARTY,FIRSTPARTY,LOCALFOLDER"
+skip = [".git", "migrations", ".env"]
+profile = "black"
 
 [build-system]
 requires = ["poetry-core"]
@@ -135,10 +150,6 @@ ignore_missing_imports = true
 [[tool.mypy.overrides]]
 module = "factory"
 ignore_missing_imports = true
-
-
-[tool.black]
-line-length = 120
 
 
 [tool.semantic_release]
