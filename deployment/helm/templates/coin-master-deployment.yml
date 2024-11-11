@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.name }}
+  labels:
+    app: {{ .Values.name }}
+  namespace: apps
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: {{ .Values.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.name }}
+    spec:
+      containers:
+      - name: web
+        image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+        args: ['api']
+        env:
+          - name: SENTRY_RELEASE
+            value: {{ .Values.image.tag }}
+        ports:
+          - name: http
+            containerPort: 8000
+        envFrom:
+          - secretRef:
+              name: coin-master-secrets
+      imagePullSecrets:
+        - name: registry-secret

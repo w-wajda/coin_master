@@ -1,0 +1,6 @@
+apiVersion: v2
+name: coin-master
+description: A Helm chart for coin master (fastapi)
+
+type: application
+version: 1.0.0

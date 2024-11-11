@@ -1,0 +1,16 @@
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: coin-master-tls
+  namespace: apps
+  labels:
+    app: {{ .Values.name }}
+spec:
+  commonName: coin-master.devsoft.pl
+  secretName: coin-master-tls
+  dnsNames:
+    - coin-master.devsoft.pl
+  issuerRef:
+    name: letsencrypt
+    kind: ClusterIssuer
