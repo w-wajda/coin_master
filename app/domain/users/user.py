@@ -1,7 +1,5 @@
 import sqlalchemy as sa
 from pwdlib import PasswordHash
-
-
 from sqlalchemy.orm import (
     Mapped,
     mapped_column,
