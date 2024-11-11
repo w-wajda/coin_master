@@ -2,8 +2,8 @@
 run:
 	@python app/main.py
 
-.PONY: migrations
-migrations:
+.PONY: migration
+migration:
 	@alembic revision --autogenerate -m "migration"
 
 .PONY: migrate
