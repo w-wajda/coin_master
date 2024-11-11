@@ -52,8 +52,6 @@ celerybeat.pid
 .testmondata*
 coverage.xml
 
-.idea/
+.idea
 media/
 /static
-
-docker-compose.override.yml
