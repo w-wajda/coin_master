@@ -20,9 +20,9 @@ class Token(Base):
     __tablename__ = "tokens"
 
     token: Mapped[str] = mapped_column(sa.String(40), index=True)
-
     user_id: Mapped[int] = mapped_column(sa.ForeignKey("users.id"))
     user: Mapped[User] = relationship(lazy="joined", backref="tokens")
+    is_active: Mapped[bool] = mapped_column(sa.Boolean, default=True)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
