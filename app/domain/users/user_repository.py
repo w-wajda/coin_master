@@ -11,4 +11,3 @@ class IUserRepository(IBaseRepository[User]):
     @abstractmethod
     async def get_by_email(self, email: str) -> Optional[User]:
         pass
-

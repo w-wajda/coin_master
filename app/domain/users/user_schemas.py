@@ -1,14 +1,11 @@
-from datetime import date
 from typing import (
     Annotated,
-    List,
     Optional,
 )
 from uuid import UUID
 
 import annotated_types as at
 from pydantic import (
-    AfterValidator,
     BaseModel,
     ConfigDict,
     EmailStr,
@@ -16,22 +13,11 @@ from pydantic import (
     field_validator,
 )
 from pydantic_core.core_schema import ValidationInfo
-from pydantic_extra_types.coordinate import Coordinate
-from starlette.requests import Request
-
-from app.domain.validators import validate_true
 
 
 class UserCreateSchema(BaseModel):
     email: EmailStr = Field(..., examples=["user@test.pl"])
     password: Annotated[str, at.MinLen(8)] = Field(exclude=True, examples=["password123"])
-
-    accept_terms_and_conditions: Annotated[
-        bool, AfterValidator(validate_true("you must accept the terms and conditions"))
-    ] = Field(..., examples=[True])
-    accept_privacy_policy: Annotated[bool, AfterValidator(validate_true("you must accept the privacy policy"))] = Field(
-        ..., examples=[True]
-    )
 
 
 class UserLoginSchema(BaseModel):

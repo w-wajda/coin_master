@@ -13,7 +13,6 @@ class User(Base):
 
     email: Mapped[str] = mapped_column(sa.String(254), unique=True, index=True)
     password: Mapped[str] = mapped_column(sa.String(128))
-
     is_staff: Mapped[bool] = mapped_column(sa.Boolean(), default=False)
 
     def check_password(self, raw_password):
