@@ -1,5 +1,3 @@
-from datetime import datetime
-from typing import Optional
 from uuid import UUID
 
 from pydantic import (
@@ -17,9 +15,6 @@ class TokenCreateSchema(BaseModel):
 class TokenSchema(BaseModel):
     model_config = ConfigDict(from_attributes=True)
     uuid: UUID
-
     token: str = Field(...)
-    created: datetime
+    is_active: bool
 
-    client: Optional[str] = None
-    device_type: Optional[str] = None
