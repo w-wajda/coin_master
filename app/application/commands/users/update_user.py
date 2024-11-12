@@ -28,6 +28,5 @@ class UpdateUserCommand:
 
             user.update(**user_data.model_dump(exclude_unset=True))
 
-
             await self.user_repository.commit()
             return user
