@@ -8,6 +8,7 @@ from sqlalchemy.orm import (
     mapped_column,
     relationship,
 )
+
 from app.domain.common.base import Base
 from app.domain.users.user import User
 

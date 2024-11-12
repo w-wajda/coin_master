@@ -23,4 +23,3 @@ class TokenSchema(BaseModel):
 
     client: Optional[str] = None
     device_type: Optional[str] = None
-
