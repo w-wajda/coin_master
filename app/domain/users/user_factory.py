@@ -11,7 +11,6 @@ class UserCreateFactoryDict(factory.DictFactory):
 
 class UserFactory(factory.Factory):
     email = factory.Faker("email")
-
     is_staff = False
 
     class Meta:
