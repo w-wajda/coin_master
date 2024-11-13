@@ -1,9 +1,6 @@
 import logging
 import os
-from typing import (
-    Optional,
-    ParamSpec,
-)
+from typing import ParamSpec
 
 from dependency_injector.wiring import (
     Closing,
@@ -61,9 +58,8 @@ class DefaultAuthenticationBackend(AuthenticationBackend):
             user = token.user
 
             pid = os.getpid()
-            logging.info(f"User object ID: {id(user)}, processed in thread {pid}, bio: {user.bio}")
+            logging.info(f"User object ID: {id(user)}, processed in thread {pid}")
 
             if user.is_staff:
                 scopes.append("is_staff")
             return AuthCredentials(scopes), token.user
-

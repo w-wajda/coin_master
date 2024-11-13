@@ -3,15 +3,10 @@ from fastapi import (
     Depends,
 )
 from fastapi.security import HTTPBearer
-
-from app.infrastructure.auth import WebsocketCookieAuth
 from app.presentation.endpoints.users import routes as users_routes
 
-
 router = APIRouter()
-
 security = HTTPBearer(auto_error=False)
-ws_security = WebsocketCookieAuth(name="token", auto_error=False)
 
 
 @router.get("/health/")
@@ -30,4 +25,7 @@ async def trigger_error():
 async def version():
     return {"version": "0.1.0"}
 
+
 router.include_router(users_routes, prefix="/v2/users", dependencies=[Depends(security)])
+router.include_router(tokens_routes, prefix="/v2/tokens", dependencies=[Depends(security)])
+
