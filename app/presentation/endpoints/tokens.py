@@ -28,7 +28,7 @@ from app.infrastructure.decorators import (
     handle_exceptions,
     requires_auth,
 )
-from app.infrastructure.di.app_container import AppContainer
+from app.infrastructure.di import AppContainer
 
 routes = APIRouter()
 
