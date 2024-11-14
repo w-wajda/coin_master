@@ -14,9 +14,6 @@ from app.infrastructure.di.containers.queries import QueryContainer
 from app.infrastructure.di.containers.repositories import RepositoryContainer
 from app.infrastructure.di.containers.services import ServiceContainer
 from app.infrastructure.di.utils import generate_modules_list
-from app.infrastructure.messaging.inmemory_pubsub import InMemoryPubSub
-from app.infrastructure.messaging.websocket.consumers import WebsocketConsumer
-from app.infrastructure.messaging.websocket.producers import WebsocketProducer
 
 
 class AppContainer(containers.DeclarativeContainer):
@@ -24,16 +21,11 @@ class AppContainer(containers.DeclarativeContainer):
 
     config: Provider[Settings] = providers.Singleton(Settings, _env_file=get_path(".env"))
 
-    pubsub = providers.Singleton(InMemoryPubSub)
-    websocket_consumer = providers.Factory(WebsocketConsumer, pubsub=pubsub)
-    websocket_producer = providers.Factory(WebsocketProducer, pubsub=pubsub)
-
     session = providers.Factory(get_async_session)
 
     repositories = providers.Container(
         RepositoryContainer,
         session=session,
-        pubsub=pubsub,
     )
 
     services = providers.Container(
@@ -45,7 +37,6 @@ class AppContainer(containers.DeclarativeContainer):
     commands = providers.Container(
         CommandContainer,
         repositories=repositories,
-        pubsub=pubsub,
         services=services,
     )
 
@@ -57,7 +48,6 @@ class AppContainer(containers.DeclarativeContainer):
 
 def init_di():
     paths = [
-        get_path("app/application/websockets/handlers"),
         get_path("app/presentation/endpoints"),
         get_path("app/presentation/cli"),
         get_path("app/infrastructure/auth"),
