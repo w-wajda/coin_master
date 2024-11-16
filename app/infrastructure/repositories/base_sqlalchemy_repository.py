@@ -47,6 +47,9 @@ class GenericSQLAlchemyRepository(IBaseRepository, Generic[T]):
     def use_session(self, session: AsyncSession):
         self.session = session
 
+    def get_session(self):
+        return self.session
+
     def add(self, instance: T):
         if self.session is None:
             raise ValueError("Session is not initialized")
@@ -66,12 +69,6 @@ class GenericSQLAlchemyRepository(IBaseRepository, Generic[T]):
 
         cursor = await self.session.execute(statement)
         return cursor.scalar()
-
-    async def delete(self, instance: T) -> None:
-        if self.session is None:
-            raise ValueError("Session is not initialized")
-
-        await self.session.delete(instance)
 
     async def get_list(self, limit=None, offset=None, **kwargs: Any) -> Sequence[T]:
         if self.session is None:
@@ -113,5 +110,8 @@ class GenericSQLAlchemyRepository(IBaseRepository, Generic[T]):
 
         self.session.expire(obj)
 
-    def get_session(self):
-        return self.session
+    async def delete(self, instance: T) -> None:
+        if self.session is None:
+            raise ValueError("Session is not initialized")
+
+        await self.session.delete(instance)

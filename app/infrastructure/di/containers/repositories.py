@@ -20,13 +20,13 @@ class RepositoryContainer(containers.DeclarativeContainer):
         session=session,
     )
 
-    email_token_repository: Provider[SQLAlchemyEmailTokenRepository] = providers.Callable(
-        SQLAlchemyEmailTokenRepository,
+    token_repository: Provider[SQLAlchemyTokenRepository] = providers.Callable(
+        SQLAlchemyTokenRepository,
         session=session,
     )
 
-    token_repository: Provider[SQLAlchemyTokenRepository] = providers.Callable(
-        SQLAlchemyTokenRepository,
+    email_token_repository: Provider[SQLAlchemyEmailTokenRepository] = providers.Callable(
+        SQLAlchemyEmailTokenRepository,
         session=session,
     )
 

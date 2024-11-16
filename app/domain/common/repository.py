@@ -32,15 +32,15 @@ class IBaseRepository(ABC, Generic[T]):
         pass  # pragma: no cover
 
     @abstractmethod
-    async def delete(self, instance: T) -> None:
-        pass  # pragma: no cover
-
-    @abstractmethod
     async def get_list(self, limit=None, offset=None, **kwargs: Any) -> Iterable[T]:
         pass  # pragma: no cover
 
     @abstractmethod
     async def commit(self) -> None:
+        pass  # pragma: no cover
+
+    @abstractmethod
+    async def delete(self, instance: T) -> None:
         pass  # pragma: no cover
 
     @abstractmethod
