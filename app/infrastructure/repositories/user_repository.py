@@ -16,10 +16,7 @@ class SQLAlchemyUserRepository(IUserRepository, GenericSQLAlchemyRepository[User
         if self.session is None:
             raise ValueError("Session is not initialized")
 
-        statement = (
-            select(self.model)
-            .where(self.model.id == pk)
-        )
+        statement = select(self.model).where(self.model.id == pk)
         cursor = await self.session.execute(statement)
         return cursor.scalar()
 
@@ -28,8 +25,7 @@ class SQLAlchemyUserRepository(IUserRepository, GenericSQLAlchemyRepository[User
             raise ValueError("Session is not initialized")
 
         statement = (
-            select(self.model)
-            .where(self.model.uuid == user_uuid)
+            select(self.model).where(self.model.uuid == user_uuid)
             # exclude users who are not ready
             .filter(User.is_ready.is_(True))
         )
@@ -46,7 +42,6 @@ class SQLAlchemyUserRepository(IUserRepository, GenericSQLAlchemyRepository[User
 
         cursor = await self.session.execute(statement)
         return cursor.scalar()
-
 
     @asynccontextmanager
     async def begin(self):

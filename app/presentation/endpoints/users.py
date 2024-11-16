@@ -18,21 +18,27 @@ from app.application.commands.users.change_password_with_token import ChangePass
 from app.application.commands.users.create_reset_password_token import CreateResetPasswordTokenCommand
 from app.application.commands.users.create_user import CreateUserCommand
 from app.application.commands.users.update_user import UpdateUserCommand
-
 from app.application.queries.users.get_user import GetUserQuery
 from app.domain.tokens.token_schemas import TokenCreateSchema
-from app.domain.users.user_exceptions import EmailAlreadyRegistered, InvalidOldPassword
+from app.domain.users.user_exceptions import (
+    EmailAlreadyRegistered,
+    InvalidOldPassword,
+)
 from app.domain.users.user_schemas import (
+    ChangePasswordSchema,
+    ChangePasswordWithTokenSchema,
+    ResetPasswordSchema,
     UserCreateSchema,
     UserLoginSchema,
     UserSchema,
-    UserUpdateSchema, ChangePasswordSchema, ResetPasswordSchema, ChangePasswordWithTokenSchema,
+    UserUpdateSchema,
 )
 from app.infrastructure.decorators import (
     handle_exceptions,
     requires_auth,
 )
 from app.infrastructure.di import AppContainer
+
 
 logger = logging.getLogger(__name__)
 

@@ -17,4 +17,3 @@ class TokenSchema(BaseModel):
     uuid: UUID
     token: str = Field(...)
     is_active: bool
-

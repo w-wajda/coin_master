@@ -30,6 +30,7 @@ from app.infrastructure.decorators import (
 )
 from app.infrastructure.di import AppContainer
 
+
 routes = APIRouter()
 
 
