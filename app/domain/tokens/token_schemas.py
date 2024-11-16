@@ -7,13 +7,17 @@ from pydantic import (
 )
 
 
-class TokenCreateSchema(BaseModel):
-    model_config = ConfigDict(from_attributes=True)
-    token: str = Field(...)
-
-
 class TokenSchema(BaseModel):
     model_config = ConfigDict(from_attributes=True)
+
     uuid: UUID
     token: str = Field(...)
     is_active: bool
+
+
+class TokenCreateSchema(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    token: str = Field(...)
+
+

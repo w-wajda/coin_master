@@ -15,16 +15,6 @@ from pydantic import (
 from pydantic_core.core_schema import ValidationInfo
 
 
-class UserCreateSchema(BaseModel):
-    email: EmailStr = Field(..., examples=["user@test.pl"])
-    password: Annotated[str, at.MinLen(8)] = Field(exclude=True, examples=["password123"])
-
-
-class UserLoginSchema(BaseModel):
-    email: EmailStr = Field(..., examples=["user@test.pl"])
-    password: str = Field(..., examples=["password123"])
-
-
 class UserSchema(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
@@ -32,8 +22,18 @@ class UserSchema(BaseModel):
     email: Optional[EmailStr]
 
 
+class UserCreateSchema(BaseModel):
+    email: EmailStr = Field(..., examples=["user@test.pl"])
+    password: Annotated[str, at.MinLen(8)] = Field(exclude=True, examples=["password123"])
+
+
 class UserUpdateSchema(BaseModel):
     email: EmailStr | None = None
+
+
+class UserLoginSchema(BaseModel):
+    email: EmailStr = Field(..., examples=["user@test.pl"])
+    password: str = Field(..., examples=["password123"])
 
 
 class ChangePasswordSchema(BaseModel):

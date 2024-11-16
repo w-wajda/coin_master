@@ -3,12 +3,6 @@ import factory
 from app.domain.users.user import User
 
 
-class UserCreateFactoryDict(factory.DictFactory):
-    email = factory.Faker("email")
-    password = factory.Faker("password")
-    is_staff = False
-
-
 class UserFactory(factory.Factory):
     email = factory.Faker("email")
     is_staff = False
@@ -19,6 +13,12 @@ class UserFactory(factory.Factory):
     @factory.post_generation
     def set_password(self: User, create, extracted, **kwargs):
         self.set_password("password")
+
+
+class UserCreateFactoryDict(factory.DictFactory):
+    email = factory.Faker("email")
+    password = factory.Faker("password")
+    is_staff = False
 
 
 class ChangePasswordWithTokenDictFactory(factory.DictFactory):
