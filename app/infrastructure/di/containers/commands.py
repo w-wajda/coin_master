@@ -31,6 +31,23 @@ class CommandContainer(containers.DeclarativeContainer):
         user_repository=repositories.user_repository,
     )
 
+    change_password: Provider[ChangePasswordCommand] = providers.Callable(
+        ChangePasswordCommand,
+        user_repository=repositories.user_repository,
+    )
+
+    create_reset_password_token: Provider[CreateResetPasswordTokenCommand] = providers.Callable(
+        CreateResetPasswordTokenCommand,
+        user_repository=repositories.user_repository,
+        email_token_repository=repositories.email_token_repository,
+    )
+
+    change_password_with_token: Provider[ChangePasswordWithTokenCommand] = providers.Callable(
+        ChangePasswordWithTokenCommand,
+        email_token_repository=repositories.email_token_repository,
+        user_repository=repositories.user_repository,
+    )
+
     create_token: Provider[CreateTokenCommand] = providers.Callable(
         CreateTokenCommand,
         token_repository=repositories.token_repository,
@@ -45,23 +62,6 @@ class CommandContainer(containers.DeclarativeContainer):
     delete_token: Provider[DeleteTokenCommand] = providers.Callable(
         DeleteTokenCommand,
         token_repository=repositories.token_repository,
-    )
-
-    change_password: Provider[ChangePasswordCommand] = providers.Callable(
-        ChangePasswordCommand,
-        user_repository=repositories.user_repository,
-    )
-
-    change_password_with_token: Provider[ChangePasswordWithTokenCommand] = providers.Callable(
-        ChangePasswordWithTokenCommand,
-        email_token_repository=repositories.email_token_repository,
-        user_repository=repositories.user_repository,
-    )
-
-    create_reset_password_token: Provider[CreateResetPasswordTokenCommand] = providers.Callable(
-        CreateResetPasswordTokenCommand,
-        user_repository=repositories.user_repository,
-        email_token_repository=repositories.email_token_repository,
     )
 
     create_email_template: Provider[CreateEmailTemplateCommand] = providers.Callable(

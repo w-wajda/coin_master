@@ -9,7 +9,6 @@ from fastapi import (
     Depends,
 )
 from starlette import status
-from starlette.requests import Request
 
 from app.application.commands.email_templates.create_email_template import CreateEmailTemplateCommand
 from app.application.commands.email_templates.delete_email_template import DeleteEmailTemplateCommand
@@ -32,11 +31,10 @@ from app.infrastructure.di import AppContainer
 routes = APIRouter()
 
 
-@routes.get("/{uuid}/", tags=["Authenticated"])
+@routes.get("/get/{uuid}/", tags=["Authenticated"])
 @requires_auth("is_staff")
 @inject
 async def get_email_template(
-    request: Request,
     uuid: UUID,
     get_email_template_query: GetEmailTemplateQuery = Depends(Provide[AppContainer.queries.get_email_template]),
 ) -> EmailTemplateSchema:
@@ -44,11 +42,10 @@ async def get_email_template(
     return EmailTemplateSchema.model_validate(email_template)
 
 
-@routes.get("/", tags=["Authenticated"])
+@routes.get("/get_list/", tags=["Authenticated"])
 @requires_auth("is_staff")
 @inject
 async def get_email_template_list(
-    request: Request,
     get_email_template_list_query: GetEmailTemplateListQuery = Depends(
         Provide[AppContainer.queries.get_email_template_list]
     ),
@@ -58,11 +55,10 @@ async def get_email_template_list(
     return pagination.get_items(email_templates)
 
 
-@routes.post("/", tags=["Authenticated"], status_code=status.HTTP_201_CREATED)
+@routes.post("/create/", tags=["Authenticated"], status_code=status.HTTP_201_CREATED)
 @requires_auth("is_staff")
 @inject
 async def create_email_template(
-    request: Request,
     email_template_data: CreateEmailTemplateSchema,
     create_email_template_command: CreateEmailTemplateCommand = Depends(
         Provide[AppContainer.commands.create_email_template]
@@ -72,7 +68,7 @@ async def create_email_template(
     return EmailTemplateSchema.model_validate(email_template)
 
 
-@routes.patch("/{uuid}/", tags=["Authenticated"], status_code=status.HTTP_200_OK)
+@routes.patch("/update/{uuid}/", tags=["Authenticated"], status_code=status.HTTP_200_OK)
 @requires_auth("is_staff")
 @inject
 async def update_email_template(
@@ -86,7 +82,7 @@ async def update_email_template(
     return EmailTemplateSchema.model_validate(email_template)
 
 
-@routes.delete("/{uuid}/", tags=["Authenticated"], status_code=status.HTTP_204_NO_CONTENT)
+@routes.delete("/delete/{uuid}/", tags=["Authenticated"], status_code=status.HTTP_204_NO_CONTENT)
 @requires_auth("is_staff")
 @inject
 async def delete_email_template(

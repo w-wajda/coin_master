@@ -33,7 +33,19 @@ from app.infrastructure.di import AppContainer
 routes = APIRouter()
 
 
-@routes.post("/create_token/", status_code=status.HTTP_201_CREATED, tags=["Anonymous"])
+@routes.get("/get_list/", tags=["Authenticated"])
+@requires_auth()
+@inject
+async def get_token_list(
+    request: Request,
+    get_token_list_query: GetTokenListQuery = Depends(Provide[AppContainer.queries.get_token_list]),
+    pagination: PaginationService = Depends(),
+) -> PaginatedSchema[TokenSchema]:
+    tokens = await get_token_list_query(request.user.id, limit=pagination.limit, offset=pagination.offset)
+    return pagination.get_items(tokens)
+
+
+@routes.post("/create/", status_code=status.HTTP_201_CREATED, tags=["Anonymous"])
 @handle_exceptions(InvalidUserCredentials)
 @inject
 async def create_token(
@@ -44,7 +56,7 @@ async def create_token(
     return TokenCreateSchema.model_validate(token)
 
 
-@routes.delete("/revoke_token/", status_code=status.HTTP_204_NO_CONTENT, tags=["Authenticated"])
+@routes.delete("/revoke/", status_code=status.HTTP_204_NO_CONTENT, tags=["Authenticated"])
 @requires_auth()
 @inject
 async def revoke_token(
@@ -58,7 +70,7 @@ async def revoke_token(
         await revoke_token_command(token_string)
 
 
-@routes.delete("/delete_token/{uuid}/", status_code=status.HTTP_204_NO_CONTENT, tags=["Authenticated"])
+@routes.delete("/delete/{uuid}/", status_code=status.HTTP_204_NO_CONTENT, tags=["Authenticated"])
 @requires_auth()
 @inject
 async def delete_token(
@@ -67,15 +79,3 @@ async def delete_token(
     delete_command_token: DeleteTokenCommand = Depends(Provide[AppContainer.commands.delete_token]),
 ):
     await delete_command_token(request.user.id, uuid)
-
-
-@routes.get("/get_token_list/", tags=["Authenticated"])
-@requires_auth()
-@inject
-async def get_token_list(
-    request: Request,
-    get_token_list_query: GetTokenListQuery = Depends(Provide[AppContainer.queries.get_token_list]),
-    pagination: PaginationService = Depends(),
-) -> PaginatedSchema[TokenSchema]:
-    tokens = await get_token_list_query(request.user.id, limit=pagination.limit, offset=pagination.offset)
-    return pagination.get_items(tokens)

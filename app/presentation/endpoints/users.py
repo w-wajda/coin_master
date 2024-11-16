@@ -39,7 +39,7 @@ logger = logging.getLogger(__name__)
 routes = APIRouter()
 
 
-@routes.get("/get_user/", tags=["Authenticated"])
+@routes.get("/get/", tags=["Authenticated"])
 @requires_auth()
 @inject
 async def get_user(
@@ -51,14 +51,14 @@ async def get_user(
     return UserSchema.model_validate(user)
 
 
-@routes.get("/get_user_list/", tags=["Authenticated"])
+@routes.get("/get_list/", tags=["Authenticated"])
 @requires_auth()
 @inject
 async def get_user_list():
     pass
 
 
-@routes.post("/create_user/", status_code=status.HTTP_201_CREATED, tags=["Anonymous"])
+@routes.post("/create/", status_code=status.HTTP_201_CREATED, tags=["Anonymous"])
 @handle_exceptions(EmailAlreadyRegistered)
 @inject
 async def create_user(
@@ -76,7 +76,7 @@ async def create_user(
     return TokenCreateSchema.model_validate(token)
 
 
-@routes.patch("/patch_user/", tags=["Authenticated"])
+@routes.patch("/patch/", tags=["Authenticated"])
 @requires_auth()
 @inject
 async def patch_user(
@@ -89,7 +89,7 @@ async def patch_user(
     return UserSchema.model_validate(user)
 
 
-@routes.get("/delete_user/", tags=["Authenticated"])
+@routes.get("/delete/", tags=["Authenticated"])
 @requires_auth()
 @inject
 async def delete_user():
