@@ -32,6 +32,8 @@ class Settings(BaseSettings):
     EMAIL_FROM: EmailStr = "info@coin-master.devsoft.pl"
     EMAIL_FROM_NAME: str = "Coin Master"
 
+    PAGINATION_DEFAULT_LIMIT: int = 20
+
     model_config = SettingsConfigDict(env_file=".env")
 
 
