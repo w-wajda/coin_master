@@ -51,6 +51,13 @@ async def get_user(
     return UserSchema.model_validate(user)
 
 
+@routes.get("/get_user_list/", tags=["Authenticated"])
+@requires_auth()
+@inject
+async def get_user_list():
+    pass
+
+
 @routes.post("/create_user/", status_code=status.HTTP_201_CREATED, tags=["Anonymous"])
 @handle_exceptions(EmailAlreadyRegistered)
 @inject
@@ -80,6 +87,13 @@ async def patch_user(
     """Update the authenticated user (update user details)"""
     user = await update_user_command(request.user.id, user_data)
     return UserSchema.model_validate(user)
+
+
+@routes.get("/delete_user/", tags=["Authenticated"])
+@requires_auth()
+@inject
+async def delete_user():
+    pass
 
 
 @routes.post("/change-password/", tags=["Authenticated"], status_code=status.HTTP_204_NO_CONTENT)
