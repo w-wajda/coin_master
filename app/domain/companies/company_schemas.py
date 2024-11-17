@@ -1,7 +1,6 @@
 from uuid import UUID
 
-from pydantic import ConfigDict
-from pydantic.v1 import BaseModel
+from pydantic import ConfigDict, BaseModel
 
 
 class CompanySchema(BaseModel):
