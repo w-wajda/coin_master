@@ -13,6 +13,5 @@ class GetCompanyListQuery:
 
     async def __call__(self, limit: int = DEFAULT_LIMIT, offset: int = 0) -> Iterable[Company]:
         async with self.company_repository.start_session():
-            pass
 
-        return await self.company_repository.get_list(limit=limit, offset=offset)
+            return await self.company_repository.get_list(limit=limit, offset=offset)

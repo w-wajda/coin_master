@@ -13,9 +13,8 @@ class GetCompanyQuery:
 
     async def __call__(self, uuid: UUID) -> Company:
         async with self.company_repository.start_session():
-            pass
 
-        if company := await self.company_repository.get_by(uuid=uuid):
-            return company
-        else:
+            if company := await self.company_repository.get_by(uuid=uuid):
+                return company
+
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUNDT, detail="Company not found")
