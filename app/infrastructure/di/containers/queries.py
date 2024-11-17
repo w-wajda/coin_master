@@ -4,6 +4,7 @@ from dependency_injector import (
 )
 from dependency_injector.providers import Provider
 
+from app.application.queries.companies.get_company import GetCompanyQuery
 from app.application.queries.email_templates.get_email_template import GetEmailTemplateQuery
 from app.application.queries.email_templates.get_email_template_list import GetEmailTemplateListQuery
 from app.application.queries.tokens.get_token import GetTokenQuery
@@ -38,4 +39,9 @@ class QueryContainer(containers.DeclarativeContainer):
     get_email_template_list: Provider[GetEmailTemplateListQuery] = providers.Callable(
         GetEmailTemplateListQuery,
         email_template_repository=repositories.email_template_repository,
+    )
+
+    get_company: Provider[GetCompanyQuery] = providers.Callable(
+        GetCompanyQuery,
+        company_repository=repositories.company_repository
     )
