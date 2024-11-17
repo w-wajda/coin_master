@@ -16,10 +16,6 @@ jobs:
       # check-out repo
       - name: Checkout repository
         uses: actions/checkout@v4
-        with:
-          ref: ${{ github.head_ref }}
-          token: ${{ secrets.GH_TOKEN }}
-          fetch-depth: 0
 
       - name: Install poetry
         run: pipx install poetry
