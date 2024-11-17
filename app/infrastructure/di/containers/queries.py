@@ -42,6 +42,5 @@ class QueryContainer(containers.DeclarativeContainer):
     )
 
     get_company: Provider[GetCompanyQuery] = providers.Callable(
-        GetCompanyQuery,
-        company_repository=repositories.company_repository
+        GetCompanyQuery, company_repository=repositories.company_repository
     )

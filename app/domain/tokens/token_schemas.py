@@ -19,5 +19,3 @@ class TokenCreateSchema(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
     token: str = Field(...)
-
-

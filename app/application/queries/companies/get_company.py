@@ -11,7 +11,7 @@ class GetCompanyQuery:
     def __init__(self, company_repository: ICompanyRepository):
         self.company_repository = company_repository
 
-    async def __call__(self, uuid:UUID) -> Company:
+    async def __call__(self, uuid: UUID) -> Company:
         async with self.company_repository.start_session():
             pass
 

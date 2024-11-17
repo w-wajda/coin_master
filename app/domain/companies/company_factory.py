@@ -18,4 +18,3 @@ class CompanyDictFactory(factory.DictFactory):
 
     class Meta:
         model = CreateCompanySchema
-
