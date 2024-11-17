@@ -4,6 +4,7 @@ from dependency_injector import (
 )
 from dependency_injector.providers import Provider
 
+from app.application.commands.companies.create_company import CreateCompanyCommand
 from app.application.commands.email_templates.create_email_template import CreateEmailTemplateCommand
 from app.application.commands.email_templates.delete_email_template import DeleteEmailTemplateCommand
 from app.application.commands.email_templates.update_email_template import UpdateEmailTemplateCommand
@@ -77,4 +78,9 @@ class CommandContainer(containers.DeclarativeContainer):
     delete_email_template: Provider[DeleteEmailTemplateCommand] = providers.Callable(
         DeleteEmailTemplateCommand,
         email_template_repository=repositories.email_template_repository,
+    )
+
+    create_company: Provider[CreateCompanyCommand] = providers.Callable(
+        CreateCompanyCommand,
+        company_repository=repositories.company_repository,
     )
