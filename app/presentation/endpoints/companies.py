@@ -11,6 +11,7 @@ from fastapi import (
 from starlette import status
 
 from app.application.commands.companies.create_company import CreateCompanyCommand
+from app.application.commands.companies.delete_company import DeleteCompanyCommand
 from app.application.commands.companies.update_company import UpdateCompanyCommand
 from app.application.queries.companies.get_company import GetCompanyQuery
 from app.application.queries.companies.get_company_list import GetCompanyListQuery
@@ -73,3 +74,13 @@ async def update_company(
 ) -> CompanySchema:
     company = await update_company_command(uuid, company_data)
     return CompanySchema.model_validate(company)
+
+
+@routes.delete("/delete/{uuid}", tags=["Authenticated"], status_code=status.HTTP_204_NO_CONTENT)
+@requires_auth()
+@inject
+async def delete_company(
+    uuid: UUID,
+    delete_company_command: DeleteCompanyCommand = Depends(Provide[AppContainer.commands.delete_company]),
+) -> None:
+    await delete_company_command(uuid)

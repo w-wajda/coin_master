@@ -5,6 +5,7 @@ from dependency_injector import (
 from dependency_injector.providers import Provider
 
 from app.application.commands.companies.create_company import CreateCompanyCommand
+from app.application.commands.companies.delete_company import DeleteCompanyCommand
 from app.application.commands.companies.update_company import UpdateCompanyCommand
 from app.application.commands.email_templates.create_email_template import CreateEmailTemplateCommand
 from app.application.commands.email_templates.delete_email_template import DeleteEmailTemplateCommand
@@ -88,5 +89,10 @@ class CommandContainer(containers.DeclarativeContainer):
 
     update_company: Provider[UpdateCompanyCommand] = providers.Callable(
         UpdateCompanyCommand,
+        company_repository=repositories.company_repository,
+    )
+
+    delete_company: Provider[DeleteCompanyCommand] = providers.Callable(
+        DeleteCompanyCommand,
         company_repository=repositories.company_repository,
     )
