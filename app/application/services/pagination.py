@@ -21,6 +21,7 @@ PaginationItemType = TypeVar("PaginationItemType")
 
 class PaginatedSchema(BaseModel, Generic[PaginationItemType]):
     model_config = ConfigDict(arbitrary_types_allowed=True)
+
     page: int
     limit: int
     items: Iterable[PaginationItemType]
