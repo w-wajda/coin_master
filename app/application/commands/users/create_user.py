@@ -17,16 +17,14 @@ class CreateUserCommand:
         logger.info(f"Creating a new user: {user_data}")
 
         async with self.user_repository.start_session():
-            pass
+            if await self.user_repository.get_by_email(user_data.email):
+                raise EmailAlreadyRegistered(email=user_data.email)
 
-        if await self.user_repository.get_by_email(user_data.email):
-            raise EmailAlreadyRegistered(email=user_data.email)
+            user = User(**user_data.model_dump(exclude={"password"}))
+            user.set_password(user_data.password)
 
-        user = User(**user_data.model_dump(exclude={"password"}))
-        user.set_password(user_data.password)
+            self.user_repository.add(user)
+            await self.user_repository.commit()
 
-        self.user_repository.add(user)
-        await self.user_repository.commit()
-
-        logger.info(f"User created successfully: {user}")
-        return user
+            logger.info(f"User created successfully: {user}")
+            return user

@@ -12,7 +12,6 @@ class DeleteCompanyCommand:
 
     async def __call__(self, uuid: UUID) -> None:
         async with self.company_repository.start_session():
-
             if company := await self.company_repository.get_by(uuid=uuid):
                 await self.company_repository.delete(company)
                 await self.company_repository.commit()

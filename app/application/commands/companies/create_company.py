@@ -9,7 +9,6 @@ class CreateCompanyCommand:
 
     async def __call__(self, company_data: CreateCompanySchema) -> Company:
         async with self.company_repository.start_session():
-
             company = Company(**company_data.model_dump())
 
             self.company_repository.add(company)

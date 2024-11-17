@@ -13,7 +13,6 @@ class GetCompanyQuery:
 
     async def __call__(self, uuid: UUID) -> Company:
         async with self.company_repository.start_session():
-
             if company := await self.company_repository.get_by(uuid=uuid):
                 return company
 

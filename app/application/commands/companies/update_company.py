@@ -14,7 +14,6 @@ class UpdateCompanyCommand:
 
     async def __call__(self, uuid: UUID, company_data: UpdateCompanySchema) -> Company:
         async with self.company_repository.start_session():
-
             if company := await self.company_repository.get_by(uuid=uuid):
                 company.update(**company_data.model_dump(exclude_unset=True))
                 await self.company_repository.commit()
