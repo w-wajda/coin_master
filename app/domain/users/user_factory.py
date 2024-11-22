@@ -15,7 +15,7 @@ class UserFactory(factory.Factory):
         self.set_password("password")
 
 
-class UserCreateFactoryDict(factory.DictFactory):
+class UserDictFactory(factory.DictFactory):
     email = factory.Faker("email")
     password = factory.Faker("password")
     is_staff = False
