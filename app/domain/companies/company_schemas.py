@@ -17,7 +17,3 @@ class CompanySchema(BaseModel):
 class CreateCompanySchema(BaseModel):
     name: str
     address: str
-
-
-class UpdateCompanySchema(CreateCompanySchema):
-    uuid: UUID
