@@ -1,12 +1,16 @@
 import factory
 
 from app.domain.companies.company import Company
-from app.domain.companies.company_schemas import CreateCompanySchema
+from app.domain.users.user_factory import (
+    UserDictFactory,
+    UserFactory,
+)
 
 
 class CompanyFactory(factory.Factory):
     name = factory.Sequence(lambda n: "Name %03d" % n)
     address = factory.Sequence(lambda n: "Address %03d" % n)
+    user = factory.SubFactory(UserFactory)
 
     class Meta:
         model = Company
@@ -15,6 +19,4 @@ class CompanyFactory(factory.Factory):
 class CompanyDictFactory(factory.DictFactory):
     name = factory.Sequence(lambda n: "Name %03d" % n)
     address = factory.Sequence(lambda n: "Adrress %03d" % n)
-
-    class Meta:
-        model = CreateCompanySchema
+    user = factory.SubFactory(UserDictFactory)
