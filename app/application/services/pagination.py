@@ -37,7 +37,7 @@ class PaginationService:
     def __init__(
         self,
         page: Annotated[int, Query(gt=0)] = 1,
-        limit: Annotated[int, Query(gt=0, lt=100)] = settings.PAGINATION_DEFAULT_LIMIT,
+        limit: Annotated[int, Query(gt=0, le=100)] = settings.PAGINATION_DEFAULT_LIMIT,
     ):
         self.page = page
         self.limit = limit
