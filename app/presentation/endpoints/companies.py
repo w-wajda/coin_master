@@ -9,6 +9,7 @@ from fastapi import (
     Depends,
 )
 from starlette import status
+from starlette.requests import Request
 
 from app.application.commands.companies.create_company import CreateCompanyCommand
 from app.application.commands.companies.delete_company import DeleteCompanyCommand
@@ -22,7 +23,6 @@ from app.application.services.pagination import (
 from app.domain.companies.company_schemas import (
     CompanySchema,
     CreateCompanySchema,
-    UpdateCompanySchema,
 )
 from app.infrastructure.decorators import requires_auth
 from app.infrastructure.di import AppContainer
@@ -35,10 +35,11 @@ routes = APIRouter()
 @requires_auth()
 @inject
 async def get_company(
+    request: Request,
     uuid: UUID,
     get_company_query: GetCompanyQuery = Depends(Provide[AppContainer.queries.get_company]),
 ) -> CompanySchema:
-    company = await get_company_query(uuid)
+    company = await get_company_query(request.user.id, uuid)
     return CompanySchema.model_validate(company)
 
 
@@ -46,10 +47,11 @@ async def get_company(
 @requires_auth()
 @inject
 async def get_company_list(
+    request: Request,
     get_company_list_query: GetCompanyListQuery = Depends(Provide[AppContainer.queries.get_company_list]),
     pagination: PaginationService = Depends(),
 ) -> PaginatedSchema[CompanySchema]:
-    companies = await get_company_list_query(limit=pagination.limit, offset=pagination.offset)
+    companies = await get_company_list_query(request.user.id, limit=pagination.limit, offset=pagination.offset)
     return pagination.get_items(companies)
 
 
@@ -57,22 +59,24 @@ async def get_company_list(
 @requires_auth()
 @inject
 async def create_company(
+    request: Request,
     company_data: CreateCompanySchema,
     create_company_command: CreateCompanyCommand = Depends(Provide[AppContainer.commands.create_company]),
 ) -> CompanySchema:
-    company = await create_company_command(company_data)
+    company = await create_company_command(request.user.id, company_data)
     return CompanySchema.model_validate(company)
 
 
-@routes.patch("/update/{uuid}", tags=["Authenticated"], status_code=status.HTTP_200_OK)
+@routes.patch("/update/{uuid}/", tags=["Authenticated"], status_code=status.HTTP_200_OK)
 @requires_auth()
 @inject
 async def update_company(
+    request: Request,
     uuid: UUID,
-    company_data: UpdateCompanySchema,
+    company_data: CreateCompanySchema,
     update_company_command: UpdateCompanyCommand = Depends(Provide[AppContainer.commands.update_company]),
 ) -> CompanySchema:
-    company = await update_company_command(uuid, company_data)
+    company = await update_company_command(request.user.id, uuid, company_data)
     return CompanySchema.model_validate(company)
 
 
@@ -80,7 +84,8 @@ async def update_company(
 @requires_auth()
 @inject
 async def delete_company(
+    request: Request,
     uuid: UUID,
     delete_company_command: DeleteCompanyCommand = Depends(Provide[AppContainer.commands.delete_company]),
 ) -> None:
-    await delete_company_command(uuid)
+    await delete_company_command(request.user.id, uuid)
