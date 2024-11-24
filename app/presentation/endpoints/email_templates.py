@@ -22,7 +22,6 @@ from app.application.services.pagination import (
 from app.domain.email_templates.email_schemas import (
     CreateEmailTemplateSchema,
     EmailTemplateSchema,
-    UpdateEmailTemplateSchema,
 )
 from app.infrastructure.decorators import requires_auth
 from app.infrastructure.di import AppContainer
@@ -73,7 +72,7 @@ async def create_email_template(
 @inject
 async def update_email_template(
     uuid: UUID,
-    email_template_data: UpdateEmailTemplateSchema,
+    email_template_data: CreateEmailTemplateSchema,
     update_email_template_command: UpdateEmailTemplateCommand = Depends(
         Provide[AppContainer.commands.update_email_template]
     ),
