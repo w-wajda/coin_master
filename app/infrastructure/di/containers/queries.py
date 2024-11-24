@@ -8,6 +8,8 @@ from app.application.queries.companies.get_company import GetCompanyQuery
 from app.application.queries.companies.get_company_list import GetCompanyListQuery
 from app.application.queries.email_templates.get_email_template import GetEmailTemplateQuery
 from app.application.queries.email_templates.get_email_template_list import GetEmailTemplateListQuery
+from app.application.queries.items.get_item import GetItemQuery
+from app.application.queries.items.get_item_list import GetItemListQuery
 from app.application.queries.tags.get_tag import GetTagQuery
 from app.application.queries.tags.get_tag_list import GetTagListQuery
 from app.application.queries.tokens.get_token import GetTokenQuery
@@ -56,4 +58,10 @@ class QueryContainer(containers.DeclarativeContainer):
 
     get_tag_list: Provider[GetTagListQuery] = providers.Callable(
         GetTagListQuery, tag_repository=repositories.tag_repository
+    )
+
+    get_item: Provider[GetItemQuery] = providers.Callable(GetItemQuery, item_repository=repositories.item_repository)
+
+    get_item_list: Provider[GetItemListQuery] = providers.Callable(
+        GetItemListQuery, item_repository=repositories.item_repository
     )

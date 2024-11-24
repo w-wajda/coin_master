@@ -10,6 +10,9 @@ from app.application.commands.companies.update_company import UpdateCompanyComma
 from app.application.commands.email_templates.create_email_template import CreateEmailTemplateCommand
 from app.application.commands.email_templates.delete_email_template import DeleteEmailTemplateCommand
 from app.application.commands.email_templates.update_email_template import UpdateEmailTemplateCommand
+from app.application.commands.items.create_item import CreateItemCommand
+from app.application.commands.items.delete_item import DeleteItemCommand
+from app.application.commands.items.update_item import UpdateItemCommand
 from app.application.commands.tags.create_tag import CreateTagCommand
 from app.application.commands.tags.delete_tag import DeleteTagCommand
 from app.application.commands.tags.update_tag import UpdateTagCommand
@@ -113,4 +116,19 @@ class CommandContainer(containers.DeclarativeContainer):
     delete_tag: Provider[DeleteTagCommand] = providers.Callable(
         DeleteTagCommand,
         tag_repository=repositories.tag_repository,
+    )
+
+    create_item: Provider[CreateItemCommand] = providers.Callable(
+        CreateItemCommand,
+        item_repository=repositories.item_repository,
+    )
+
+    update_item: Provider[UpdateItemCommand] = providers.Callable(
+        UpdateItemCommand,
+        item_repository=repositories.item_repository,
+    )
+
+    delete_item: Provider[DeleteItemCommand] = providers.Callable(
+        DeleteItemCommand,
+        item_repository=repositories.item_repository,
     )
