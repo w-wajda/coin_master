@@ -20,8 +20,8 @@ class GetCompanyListQuery:
         async with self.user_repository.start_session() as session:
             self.company_repository.use_session(session)
 
-        user = await self.user_repository.get(user_id)
-        if not user:
-            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
+            user = await self.user_repository.get(user_id)
+            if not user:
+                raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
 
-        return await self.company_repository.get_list(user=user, limit=limit, offset=offset)
+            return await self.company_repository.get_list(user=user, limit=limit, offset=offset)

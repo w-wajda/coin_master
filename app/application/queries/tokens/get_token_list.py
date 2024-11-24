@@ -21,11 +21,11 @@ class GetTokenListQuery:
         async with self.user_repository.start_session() as session:
             self.token_repository.use_session(session)
 
-        user = await self.user_repository.get(user_id)
+            user = await self.user_repository.get(user_id)
 
-        if not user:
-            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
+            if not user:
+                raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
 
-        token_list = await self.token_repository.get_list(user=user, limit=limit, offset=offset)
-        await asyncio.gather(*(token.resolve_geo_ip_fields() for token in token_list))
-        return token_list
+            token_list = await self.token_repository.get_list(user=user, limit=limit, offset=offset)
+            await asyncio.gather(*(token.resolve_geo_ip_fields() for token in token_list))
+            return token_list
