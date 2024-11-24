@@ -96,3 +96,18 @@ class CommandContainer(containers.DeclarativeContainer):
         DeleteCompanyCommand,
         company_repository=repositories.company_repository,
     )
+
+    create_tag: Provider[CreateTagCommand] = providers.Callable(
+        CreateTagCommand,
+        tag_repository=repositories.tag_repository,
+    )
+
+    update_tag: Provider[UpdateTagCommand] = providers.Callable(
+        UpdateTagCommand,
+        tag_repository=repositories.tag_repository,
+    )
+
+    delete_tag: Provider[DeleteTagCommand] = providers.Callable(
+        DeleteTagCommand,
+        tag_repository=repositories.tag_repository,
+    )
