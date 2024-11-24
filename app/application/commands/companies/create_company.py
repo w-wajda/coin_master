@@ -26,16 +26,3 @@ class CreateCompanyCommand:
         self.company_repository.add(company)
         await self.company_repository.commit()
         return company
-
-
-class Auto:
-    def __init__(self, name, kolor):
-        self.name = name
-        self.kolor = kolor
-
-
-a = Auto(name="bmw", kolor="czarny")
-
-b = {"name": "Merc", "kolor": "czerwony"}
-
-Auto(**b)
