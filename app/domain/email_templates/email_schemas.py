@@ -8,6 +8,7 @@ from pydantic import (
 
 class EmailTemplateSchema(BaseModel):
     model_config = ConfigDict(from_attributes=True)
+
     uuid: UUID
     email_type: str
     subject: str
