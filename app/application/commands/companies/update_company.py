@@ -4,7 +4,7 @@ from starlette import status
 
 from app.domain.companies.company import Company
 from app.domain.companies.company_repository import ICompanyRepository
-from app.domain.companies.company_schemas import UpdateCompanySchema
+from app.domain.companies.company_schemas import CreateCompanySchema
 from app.domain.exceptions import HTTPException
 from app.domain.users.user_repository import IUserRepository
 
@@ -14,7 +14,7 @@ class UpdateCompanyCommand:
         self.user_repository = user_repository
         self.company_repository = company_repository
 
-    async def __call__(self, user_id: int, uuid: UUID, company_data: UpdateCompanySchema) -> Company:
+    async def __call__(self, user_id: int, uuid: UUID, company_data: CreateCompanySchema) -> Company:
         async with self.user_repository.start_session() as session:
             self.company_repository.use_session(session)
 
