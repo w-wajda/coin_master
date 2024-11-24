@@ -22,7 +22,3 @@ class CreateEmailTemplateSchema(BaseModel):
     text_content: str
     html_content: str
     is_active: bool
-
-
-class UpdateEmailTemplateSchema(CreateEmailTemplateSchema):
-    uuid: UUID

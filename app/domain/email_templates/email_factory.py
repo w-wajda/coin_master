@@ -4,7 +4,6 @@ from app.domain.email_templates.email import (
     EmailTemplate,
     EmailTypeEnum,
 )
-from app.domain.email_templates.email_schemas import CreateEmailTemplateSchema
 
 
 class EmailTemplateFactory(factory.Factory):
@@ -24,6 +23,3 @@ class EmailTemplateDictFactory(factory.DictFactory):
     text_content = factory.Sequence(lambda n: "Text content %03d" % n)
     html_content = factory.Sequence(lambda n: "Html content %03d" % n)
     is_active = False
-
-    class Meta:
-        model = CreateEmailTemplateSchema
