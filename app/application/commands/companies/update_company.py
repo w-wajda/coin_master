@@ -18,13 +18,13 @@ class UpdateCompanyCommand:
         async with self.user_repository.start_session() as session:
             self.company_repository.use_session(session)
 
-        user = await self.user_repository.get(user_id)
-        if not user:
-            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
+            user = await self.user_repository.get(user_id)
+            if not user:
+                raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
 
-        if company := await self.company_repository.get_by(user=user, uuid=uuid):
-            company.update(**company_data.model_dump(exclude_unset=True))
-            await self.company_repository.commit()
-            return company
+            if company := await self.company_repository.get_by(user=user, uuid=uuid):
+                company.update(**company_data.model_dump(exclude_unset=True))
+                await self.company_repository.commit()
+                return company
 
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Company not found")
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Company not found")
