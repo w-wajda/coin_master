@@ -32,6 +32,7 @@ async def version():
     return {"version": "0.1.0"}
 
 
+router.include_router(companies_routes, prefix="/v2/tags", dependencies=[Depends(security)])
 router.include_router(companies_routes, prefix="/v2/companies", dependencies=[Depends(security)])
 router.include_router(email_templates_routes, prefix="/v2/email_templates", dependencies=[Depends(security)])
 router.include_router(receipts_routes, prefix="/v2/receipts", dependencies=[Depends(security)])
