@@ -13,6 +13,6 @@ class TagSchema(BaseModel):
     name: str
 
 
-class CreateCompanySchema(BaseModel):
+class CreateTagSchema(BaseModel):
     name: str
     address: str
