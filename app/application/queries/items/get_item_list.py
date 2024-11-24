@@ -1,0 +1,2 @@
+class GetItemListQuery:
+    pass
