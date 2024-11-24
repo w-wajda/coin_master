@@ -1,7 +1,12 @@
 from decimal import Decimal
 
-from sqlalchemy.orm import mapped_column, Mapped, relationship
 import sqlalchemy as sa
+from sqlalchemy.orm import (
+    Mapped,
+    mapped_column,
+    relationship,
+)
+
 from app.domain.common.base import Base
 from app.domain.users.user import User
 
