@@ -9,6 +9,9 @@ from sqlalchemy.ext.asyncio import create_async_engine
 
 import app.domain.users.user  # noqa: F401
 import app.domain.tokens.token  # noqa: F401
+import app.domain.companies.company  # noqa: F401
+import app.domain.email_templates.email  # noqa: F401
+import app.domain.tags.tag  # noqa: F401
 
 from app.domain.common.base import Base
 from app.infrastructure.conf import settings
