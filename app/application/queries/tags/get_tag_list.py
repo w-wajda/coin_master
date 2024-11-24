@@ -1,8 +1,8 @@
 from typing import Iterable
 
-from app.domain.exceptions import HTTPException
 from starlette import status
 
+from app.domain.exceptions import HTTPException
 from app.domain.tags.tag import Tag
 from app.domain.tags.tag_repository import ITagRepository
 from app.domain.users.user_repository import IUserRepository
@@ -12,7 +12,7 @@ from app.infrastructure.conf import settings
 class GetTagListQuery:
     DEFAULT_LIMIT = settings.PAGINATION_DEFAULT_LIMIT
 
-    def __init__(self, user_repository: IUserRepository, tag_repository:ITagRepository):
+    def __init__(self, user_repository: IUserRepository, tag_repository: ITagRepository):
         self.user_repository = user_repository
         self.tag_repository = tag_repository
 
@@ -25,4 +25,3 @@ class GetTagListQuery:
                 raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
 
             return await self.tag_repository.get_list(user=user, limit=limit, offset=offset)
-

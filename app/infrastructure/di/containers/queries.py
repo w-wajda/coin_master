@@ -52,9 +52,7 @@ class QueryContainer(containers.DeclarativeContainer):
         GetCompanyListQuery, company_repository=repositories.company_repository
     )
 
-    get_tag: Provider[GetTagQuery] = providers.Callable(
-        GetTagQuery, tag_repository=repositories.tag_repository
-    )
+    get_tag: Provider[GetTagQuery] = providers.Callable(GetTagQuery, tag_repository=repositories.tag_repository)
 
     get_tag_list: Provider[GetTagListQuery] = providers.Callable(
         GetTagListQuery, tag_repository=repositories.tag_repository

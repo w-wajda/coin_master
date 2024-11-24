@@ -1,7 +1,10 @@
 import factory
 
 from app.domain.tags.tag import Tag
-from app.domain.users.user_factory import UserFactory, UserDictFactory
+from app.domain.users.user_factory import (
+    UserDictFactory,
+    UserFactory,
+)
 
 
 class TagFactory(factory.Factory):

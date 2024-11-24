@@ -10,7 +10,7 @@ from app.domain.users.user_repository import IUserRepository
 
 
 class UpdateTagCommand:
-    def __init__(self, user_repository: IUserRepository, tag_repository:ITagRepository):
+    def __init__(self, user_repository: IUserRepository, tag_repository: ITagRepository):
         self.user_repository = user_repository
         self.tag_repository = tag_repository
 
@@ -28,6 +28,3 @@ class UpdateTagCommand:
                 return tag
 
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Tag not found")
-
-
-

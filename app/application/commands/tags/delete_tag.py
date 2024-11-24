@@ -1,6 +1,5 @@
 from uuid import UUID
 
-from sqlalchemy.orm import declared_attr
 from starlette import status
 
 from app.domain.exceptions import HTTPException
@@ -26,4 +25,3 @@ class DeleteTagCommand:
                 await self.tag_repository.commit()
 
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Tag not found")
-

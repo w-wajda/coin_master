@@ -10,6 +10,9 @@ from app.application.commands.companies.update_company import UpdateCompanyComma
 from app.application.commands.email_templates.create_email_template import CreateEmailTemplateCommand
 from app.application.commands.email_templates.delete_email_template import DeleteEmailTemplateCommand
 from app.application.commands.email_templates.update_email_template import UpdateEmailTemplateCommand
+from app.application.commands.tags.create_tag import CreateTagCommand
+from app.application.commands.tags.delete_tag import DeleteTagCommand
+from app.application.commands.tags.update_tag import UpdateTagCommand
 from app.application.commands.tokens.create_token import CreateTokenCommand
 from app.application.commands.tokens.delete_token import DeleteTokenCommand
 from app.application.commands.tokens.revoke_token import RevokeTokenCommand

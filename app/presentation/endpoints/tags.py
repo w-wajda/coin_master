@@ -20,7 +20,10 @@ from app.application.services.pagination import (
     PaginatedSchema,
     PaginationService,
 )
-from app.domain.tags.tag_schemas import TagSchema, CreateTagSchema
+from app.domain.tags.tag_schemas import (
+    CreateTagSchema,
+    TagSchema,
+)
 from app.infrastructure.decorators import requires_auth
 from app.infrastructure.di import AppContainer
 
