@@ -60,8 +60,6 @@ class QueryContainer(containers.DeclarativeContainer):
         GetTagListQuery, tag_repository=repositories.tag_repository
     )
 
-    get_item: Provider[GetItemQuery] = providers.Callable(GetItemQuery, item_repository=repositories.item_repository)
-
     get_item_list: Provider[GetItemListQuery] = providers.Callable(
         GetItemListQuery, item_repository=repositories.item_repository
     )
