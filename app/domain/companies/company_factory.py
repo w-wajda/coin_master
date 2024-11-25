@@ -18,5 +18,5 @@ class CompanyFactory(factory.Factory):
 
 class CompanyDictFactory(factory.DictFactory):
     name = factory.Sequence(lambda n: "Name %03d" % n)
-    address = factory.Sequence(lambda n: "Adrress %03d" % n)
+    address = factory.Sequence(lambda n: "Address %03d" % n)
     user = factory.SubFactory(UserDictFactory)
