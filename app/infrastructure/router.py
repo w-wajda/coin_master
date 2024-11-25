@@ -31,7 +31,7 @@ async def trigger_error():
 async def version():
     return {"version": "0.1.0"}
 
-
+router.include_router(companies_routes, prefix="/v2/items", dependencies=[Depends(security)])
 router.include_router(companies_routes, prefix="/v2/tags", dependencies=[Depends(security)])
 router.include_router(companies_routes, prefix="/v2/companies", dependencies=[Depends(security)])
 router.include_router(email_templates_routes, prefix="/v2/email_templates", dependencies=[Depends(security)])
