@@ -11,7 +11,9 @@ from app.domain.users.user_repository import IUserRepository
 
 
 class CreateItemCommand:
-    def __init__(self, user_repository: IUserRepository, item_repository: IItemRepository, receipt_repository: IReceiptRepository):
+    def __init__(
+        self, user_repository: IUserRepository, item_repository: IItemRepository, receipt_repository: IReceiptRepository
+    ):
         self.user_repository = user_repository
         self.item_repository = item_repository
         self.receipt_repository = receipt_repository

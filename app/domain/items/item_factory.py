@@ -1,7 +1,10 @@
 import factory
 
 from app.domain.items.item import Item
-from app.domain.receipts.receipt_factory import ReceiptFactory, ReceiptDictFactory
+from app.domain.receipts.receipt_factory import (
+    ReceiptDictFactory,
+    ReceiptFactory,
+)
 
 
 class ItemFactory(factory.Factory):

@@ -14,12 +14,16 @@ from app.infrastructure.conf import settings
 class GetItemListQuery:
     DEFAULT_LIMIT = settings.PAGINATION_DEFAULT_LIMIT
 
-    def __init__(self, user_repository: IUserRepository, item_repository: IItemRepository, receipt_repository: IReceiptRepository):
+    def __init__(
+        self, user_repository: IUserRepository, item_repository: IItemRepository, receipt_repository: IReceiptRepository
+    ):
         self.user_repository = user_repository
         self.item_repository = item_repository
         self.receipt_repository = receipt_repository
 
-    async def __call__(self, user_id: int, receipt_uuid: UUID, limit: int = DEFAULT_LIMIT, offset: int = 0) -> Iterable[Item]:
+    async def __call__(
+        self, user_id: int, receipt_uuid: UUID, limit: int = DEFAULT_LIMIT, offset: int = 0
+    ) -> Iterable[Item]:
         async with self.user_repository.start_session() as session:
             self.item_repository.use_session(session)
             self.receipt_repository.use_session(session)
@@ -32,4 +36,6 @@ class GetItemListQuery:
             if not receipt:
                 raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Receipt not found")
 
-            return await self.item_repository.get_list(user_id=user.id, receipt_id=receipt.id, limit=limit, offset=offset)
+            return await self.item_repository.get_list(
+                user_id=user.id, receipt_id=receipt.id, limit=limit, offset=offset
+            )

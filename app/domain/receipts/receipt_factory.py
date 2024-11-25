@@ -1,6 +1,9 @@
 import factory
 
-from app.domain.companies.company_factory import CompanyFactory, CompanyDictFactory
+from app.domain.companies.company_factory import (
+    CompanyDictFactory,
+    CompanyFactory,
+)
 from app.domain.receipts.receipt import Receipt
 from app.domain.users.user_factory import (
     UserDictFactory,
