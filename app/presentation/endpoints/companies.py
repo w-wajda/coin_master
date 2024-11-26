@@ -46,7 +46,7 @@ async def get_company(
 @routes.get("/list/", tags=["Authenticated"])
 @requires_auth()
 @inject
-async def companies_list(
+async def get_company_list(
     request: Request,
     get_company_list_query: GetCompanyListQuery = Depends(Provide[AppContainer.queries.get_company_list]),
     pagination: PaginationService = Depends(),

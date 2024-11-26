@@ -39,11 +39,11 @@ async def get_tag(
     uuid: UUID,
     get_tag_query: GetTagQuery = Depends(Provide[AppContainer.queries.get_tag]),
 ) -> TagSchema:
-    tag = await get_tag_query(request.user.id, uuid)
+    tag = await get_tag_query(user_id=request.user.id, uuid=uuid)
     return TagSchema.model_validate(tag)
 
 
-@routes.get("/get_list/", tags=["Authenticated"])
+@routes.get("/list/", tags=["Authenticated"])
 @requires_auth()
 @inject
 async def get_tag_list(
@@ -51,7 +51,7 @@ async def get_tag_list(
     get_tag_list_query: GetTagListQuery = Depends(Provide[AppContainer.queries.get_tag_list]),
     pagination: PaginationService = Depends(),
 ) -> PaginatedSchema[TagSchema]:
-    tags = await get_tag_list_query(request.user.id, limit=pagination.limit, offset=pagination.offset)
+    tags = await get_tag_list_query(user_id=request.user.id, limit=pagination.limit, offset=pagination.offset)
     return pagination.get_items(tags)
 
 
@@ -63,7 +63,7 @@ async def create_tag(
     tag_data: CreateTagSchema,
     create_tag_command: CreateTagCommand = Depends(Provide[AppContainer.commands.create_tag]),
 ) -> TagSchema:
-    tag = await create_tag_command(request.user.id, tag_data)
+    tag = await create_tag_command(user_id=request.user.id, tag_data=tag_data)
     return TagSchema.model_validate(tag)
 
 
@@ -76,7 +76,7 @@ async def update_tag(
     tag_data: CreateTagSchema,
     update_tag_command: UpdateTagCommand = Depends(Provide[AppContainer.commands.update_tag]),
 ) -> TagSchema:
-    tag = await update_tag_command(request.user.id, uuid, tag_data)
+    tag = await update_tag_command(user_id=request.user.id, uuid=uuid, tag_data=tag_data)
     return TagSchema.model_validate(tag)
 
 
@@ -88,4 +88,4 @@ async def delete_tag(
     uuid: UUID,
     delete_tag_command: DeleteTagCommand = Depends(Provide[AppContainer.commands.delete_tag]),
 ) -> None:
-    await delete_tag_command(request.user.id, uuid)
+    await delete_tag_command(user_id=request.user.id, uuid=uuid)

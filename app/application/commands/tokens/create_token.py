@@ -25,7 +25,7 @@ class CreateTokenCommand:
             if not user or not user.check_password(user_login_data.password):
                 raise InvalidUserCredentials(email=user_login_data.email)
 
-            token = Token(user=user)
+            token = Token(user_id=user.id)
             self.token_repository.add(token)
             await self.token_repository.commit()
 

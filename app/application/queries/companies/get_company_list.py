@@ -24,4 +24,4 @@ class GetCompanyListQuery:
             if not user:
                 raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
 
-            return await self.company_repository.get_list(user_id=user.id, limit=limit, offset=offset)
+            return await self.company_repository.get_list(user_id=user_id, limit=limit, offset=offset)

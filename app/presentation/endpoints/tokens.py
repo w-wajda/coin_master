@@ -34,7 +34,7 @@ from app.infrastructure.di import AppContainer
 routes = APIRouter()
 
 
-@routes.get("/get_list/", tags=["Authenticated"])
+@routes.get("/list/", tags=["Authenticated"])
 @requires_auth()
 @inject
 async def get_token_list(
@@ -42,7 +42,7 @@ async def get_token_list(
     get_token_list_query: GetTokenListQuery = Depends(Provide[AppContainer.queries.get_token_list]),
     pagination: PaginationService = Depends(),
 ) -> PaginatedSchema[TokenSchema]:
-    tokens = await get_token_list_query(request.user.id, limit=pagination.limit, offset=pagination.offset)
+    tokens = await get_token_list_query(user_id=request.user.id, limit=pagination.limit, offset=pagination.offset)
     return pagination.get_items(tokens)
 
 
@@ -53,7 +53,7 @@ async def create_token(
     user_login_data: UserLoginSchema,
     create_token_command: CreateTokenCommand = Depends(Provide[AppContainer.commands.create_token]),
 ) -> TokenCreateSchema:
-    token = await create_token_command(user_login_data)
+    token = await create_token_command(user_login_data=user_login_data)
     return TokenCreateSchema.model_validate(token)
 
 
@@ -79,4 +79,4 @@ async def delete_token(
     request: Request,
     delete_command_token: DeleteTokenCommand = Depends(Provide[AppContainer.commands.delete_token]),
 ):
-    await delete_command_token(request.user.id, uuid)
+    await delete_command_token(user_id=request.user.id, uuid=uuid)

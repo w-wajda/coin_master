@@ -53,11 +53,11 @@ async def get_user(
     get_user_query: GetUserQuery = Depends(Closing(Provide[AppContainer.queries.get_user])),  # noqa: B008
 ) -> UserSchema:
     """Get the authenticated user (current user details)"""
-    user = await get_user_query(request.user.id)
+    user = await get_user_query(user_id=request.user.id)
     return UserSchema.model_validate(user)
 
 
-@routes.get("/get_list/", tags=["Authenticated"])
+@routes.get("/list/", tags=["Authenticated"])
 @requires_auth()
 @inject
 async def get_user_list():
@@ -73,7 +73,7 @@ async def create_user(
     create_token_command: CreateTokenCommand = Depends(Provide[AppContainer.commands.create_token]),
 ) -> TokenCreateSchema:
     """Create a new user (register)"""
-    await create_user_command(user_data)
+    await create_user_command(user_data=user_data)
 
     # Login the user after sign up
     user_login_data = UserLoginSchema(email=user_data.email, password=user_data.password)
@@ -91,7 +91,7 @@ async def patch_user(
     update_user_command: UpdateUserCommand = Depends(Provide[AppContainer.commands.update_user]),
 ) -> UserSchema:
     """Update the authenticated user (update user details)"""
-    user = await update_user_command(request.user.id, user_data)
+    user = await update_user_command(user_id=request.user.id, user_data=user_data)
     return UserSchema.model_validate(user)
 
 
@@ -112,7 +112,7 @@ async def change_password(
     change_password_command: ChangePasswordCommand = Depends(Provide[AppContainer.commands.change_password]),
 ):
     """Change the authenticated user's password"""
-    await change_password_command(request.user.id, change_password_data)
+    await change_password_command(user_id=request.user.id, change_password_data=change_password_data)
 
 
 @routes.post("/reset-password/", tags=["Anonymous"], status_code=status.HTTP_204_NO_CONTENT)
@@ -123,7 +123,7 @@ async def create_reset_password_token(
         Provide[AppContainer.commands.create_reset_password_token]
     ),
 ):
-    await reset_password_command(reset_password_data)
+    await reset_password_command(reset_password_data=reset_password_data)
 
 
 @routes.post("/reset-password/confirm/", tags=["Anonymous"], status_code=status.HTTP_204_NO_CONTENT)
@@ -134,4 +134,4 @@ async def reset_password_confirm(
         Provide[AppContainer.commands.change_password_with_token]
     ),
 ):
-    await change_password_with_token_command(change_password_with_token_schema)
+    await change_password_with_token_command(change_password_with_token_schema=change_password_with_token_schema)

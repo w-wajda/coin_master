@@ -27,7 +27,7 @@ class UpdateItemCommand:
             if not user:
                 raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
 
-            receipt = await self.receipt_repository.get_by(user_id=user.id, uuid=receipt_uuid)
+            receipt = await self.receipt_repository.get_by(user_id=user_id, uuid=receipt_uuid)
             if not receipt:
                 raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Receipt not found")
 

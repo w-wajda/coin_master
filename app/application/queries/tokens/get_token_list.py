@@ -26,6 +26,6 @@ class GetTokenListQuery:
             if not user:
                 raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
 
-            token_list = await self.token_repository.get_list(user=user, limit=limit, offset=offset)
+            token_list = await self.token_repository.get_list(user_id=user_id, limit=limit, offset=offset)
             await asyncio.gather(*(token.resolve_geo_ip_fields() for token in token_list))
             return token_list

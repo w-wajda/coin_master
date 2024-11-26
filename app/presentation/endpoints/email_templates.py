@@ -44,7 +44,7 @@ async def get_email_template(
 @routes.get("/list/", tags=["Authenticated"])
 @requires_auth("is_staff")
 @inject
-async def email_templates_list(
+async def get_email_template_list(
     get_email_template_list_query: GetEmailTemplateListQuery = Depends(
         Provide[AppContainer.queries.get_email_template_list]
     ),
