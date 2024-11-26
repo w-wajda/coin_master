@@ -39,19 +39,19 @@ async def get_company(
     uuid: UUID,
     get_company_query: GetCompanyQuery = Depends(Provide[AppContainer.queries.get_company]),
 ) -> CompanySchema:
-    company = await get_company_query(request.user.id, uuid)
+    company = await get_company_query(user_id=request.user.id, uuid=uuid)
     return CompanySchema.model_validate(company)
 
 
-@routes.get("/get_list/", tags=["Authenticated"])
+@routes.get("/", tags=["Authenticated"])
 @requires_auth()
 @inject
-async def get_company_list(
+async def companies_list(
     request: Request,
     get_company_list_query: GetCompanyListQuery = Depends(Provide[AppContainer.queries.get_company_list]),
     pagination: PaginationService = Depends(),
 ) -> PaginatedSchema[CompanySchema]:
-    companies = await get_company_list_query(request.user.id, limit=pagination.limit, offset=pagination.offset)
+    companies = await get_company_list_query(user_id=request.user.id, limit=pagination.limit, offset=pagination.offset)
     return pagination.get_items(companies)
 
 
@@ -63,7 +63,7 @@ async def create_company(
     company_data: CreateCompanySchema,
     create_company_command: CreateCompanyCommand = Depends(Provide[AppContainer.commands.create_company]),
 ) -> CompanySchema:
-    company = await create_company_command(request.user.id, company_data)
+    company = await create_company_command(user_id=request.user.id, company_data=company_data)
     return CompanySchema.model_validate(company)
 
 
@@ -76,7 +76,7 @@ async def update_company(
     company_data: CreateCompanySchema,
     update_company_command: UpdateCompanyCommand = Depends(Provide[AppContainer.commands.update_company]),
 ) -> CompanySchema:
-    company = await update_company_command(request.user.id, uuid, company_data)
+    company = await update_company_command(user_id=request.user.id, uuid=uuid, company_data=company_data)
     return CompanySchema.model_validate(company)
 
 
@@ -88,4 +88,4 @@ async def delete_company(
     uuid: UUID,
     delete_company_command: DeleteCompanyCommand = Depends(Provide[AppContainer.commands.delete_company]),
 ) -> None:
-    await delete_company_command(request.user.id, uuid)
+    await delete_company_command(user_id=request.user.id, uuid=uuid)

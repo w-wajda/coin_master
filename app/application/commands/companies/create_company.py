@@ -21,7 +21,7 @@ class CreateCompanyCommand:
                 raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
 
             company = Company(**company_data.model_dump())
-            company.user_id = user_id
+            company.user_id = user.id
 
             self.company_repository.add(company)
             await self.company_repository.commit()
