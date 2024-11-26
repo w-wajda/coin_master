@@ -33,7 +33,7 @@ routes = APIRouter()
 @routes.get("/{receipt_uuid}/items/", tags=["Authenticated"])
 @requires_auth()
 @inject
-async def get_item_list(
+async def items_list(
     request: Request,
     receipt_uuid: UUID,
     get_item_list_query: GetItemListQuery = Depends(Provide[AppContainer.queries.get_item_list]),
