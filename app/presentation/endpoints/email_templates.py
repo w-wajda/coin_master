@@ -37,14 +37,14 @@ async def get_email_template(
     uuid: UUID,
     get_email_template_query: GetEmailTemplateQuery = Depends(Provide[AppContainer.queries.get_email_template]),
 ) -> EmailTemplateSchema:
-    email_template = await get_email_template_query(uuid)
+    email_template = await get_email_template_query(uuid=uuid)
     return EmailTemplateSchema.model_validate(email_template)
 
 
-@routes.get("/get_list/", tags=["Authenticated"])
+@routes.get("/list/", tags=["Authenticated"])
 @requires_auth("is_staff")
 @inject
-async def get_email_template_list(
+async def email_templates_list(
     get_email_template_list_query: GetEmailTemplateListQuery = Depends(
         Provide[AppContainer.queries.get_email_template_list]
     ),
@@ -63,7 +63,7 @@ async def create_email_template(
         Provide[AppContainer.commands.create_email_template]
     ),
 ) -> EmailTemplateSchema:
-    email_template = await create_email_template_command(email_template_data)
+    email_template = await create_email_template_command(email_template_data=email_template_data)
     return EmailTemplateSchema.model_validate(email_template)
 
 
@@ -77,7 +77,7 @@ async def update_email_template(
         Provide[AppContainer.commands.update_email_template]
     ),
 ) -> EmailTemplateSchema:
-    email_template = await update_email_template_command(uuid, email_template_data)
+    email_template = await update_email_template_command(uuid=uuid, email_template_data=email_template_data)
     return EmailTemplateSchema.model_validate(email_template)
 
 
@@ -90,4 +90,4 @@ async def delete_email_template(
         Provide[AppContainer.commands.delete_email_template]
     ),
 ) -> None:
-    await delete_email_template_command(uuid)
+    await delete_email_template_command(uuid=uuid)

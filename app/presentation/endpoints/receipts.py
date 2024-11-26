@@ -30,7 +30,7 @@ from app.infrastructure.di import AppContainer
 routes = APIRouter()
 
 
-@routes.get("/{receipt_uuid}/items/", tags=["Authenticated"])
+@routes.get("/{receipt_uuid}/items/list/", tags=["Authenticated"])
 @requires_auth()
 @inject
 async def items_list(

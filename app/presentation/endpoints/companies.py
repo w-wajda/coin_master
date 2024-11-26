@@ -43,7 +43,7 @@ async def get_company(
     return CompanySchema.model_validate(company)
 
 
-@routes.get("/", tags=["Authenticated"])
+@routes.get("/list/", tags=["Authenticated"])
 @requires_auth()
 @inject
 async def companies_list(
