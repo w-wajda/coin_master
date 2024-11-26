@@ -36,6 +36,4 @@ class GetItemListQuery:
             if not receipt:
                 raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Receipt not found")
 
-            return await self.item_repository.get_list(
-                user_id=user.id, receipt_id=receipt.id, limit=limit, offset=offset
-            )
+            return await self.item_repository.get_list(receipt_id=receipt.id, limit=limit, offset=offset)
