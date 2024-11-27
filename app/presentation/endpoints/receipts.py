@@ -30,7 +30,7 @@ from app.infrastructure.di import AppContainer
 routes = APIRouter()
 
 
-@routes.get("/{receipt_uuid}/items/list/", tags=["Authenticated"])
+@routes.get("/{receipt_uuid}/items/", tags=["Authenticated"])
 @requires_auth()
 @inject
 async def get_item_list(
@@ -45,7 +45,7 @@ async def get_item_list(
     return pagination.get_items(items)
 
 
-@routes.post("/{receipt_uuid}/create/", tags=["Authenticated"], status_code=status.HTTP_201_CREATED)
+@routes.post("/{receipt_uuid}/items/", tags=["Authenticated"], status_code=status.HTTP_201_CREATED)
 @requires_auth()
 @inject
 async def create_item(
@@ -58,7 +58,7 @@ async def create_item(
     return ItemSchema.model_validate(item)
 
 
-@routes.patch("/{receipt_uuid}/update/{uuid}/", tags=["Authenticated"], status_code=status.HTTP_200_OK)
+@routes.patch("/{receipt_uuid}/items/{uuid}/", tags=["Authenticated"], status_code=status.HTTP_200_OK)
 @requires_auth()
 @inject
 async def update_item(
@@ -72,7 +72,7 @@ async def update_item(
     return ItemSchema.model_validate(item)
 
 
-@routes.delete("/{receipt_uuid}/delete/{uuid}", tags=["Authenticated"], status_code=status.HTTP_204_NO_CONTENT)
+@routes.delete("/{receipt_uuid}/items/{uuid}/", tags=["Authenticated"], status_code=status.HTTP_204_NO_CONTENT)
 @requires_auth()
 @inject
 async def delete_item(

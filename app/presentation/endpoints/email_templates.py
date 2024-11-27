@@ -30,7 +30,7 @@ from app.infrastructure.di import AppContainer
 routes = APIRouter()
 
 
-@routes.get("/get/{uuid}/", tags=["Authenticated"])
+@routes.get("/{uuid}/", tags=["Authenticated"])
 @requires_auth("is_staff")
 @inject
 async def get_email_template(
@@ -41,7 +41,7 @@ async def get_email_template(
     return EmailTemplateSchema.model_validate(email_template)
 
 
-@routes.get("/list/", tags=["Authenticated"])
+@routes.get("/", tags=["Authenticated"])
 @requires_auth("is_staff")
 @inject
 async def get_email_template_list(
@@ -54,7 +54,7 @@ async def get_email_template_list(
     return pagination.get_items(email_templates)
 
 
-@routes.post("/create/", tags=["Authenticated"], status_code=status.HTTP_201_CREATED)
+@routes.post("/", tags=["Authenticated"], status_code=status.HTTP_201_CREATED)
 @requires_auth("is_staff")
 @inject
 async def create_email_template(
@@ -67,7 +67,7 @@ async def create_email_template(
     return EmailTemplateSchema.model_validate(email_template)
 
 
-@routes.patch("/update/{uuid}/", tags=["Authenticated"], status_code=status.HTTP_200_OK)
+@routes.patch("/{uuid}/", tags=["Authenticated"], status_code=status.HTTP_200_OK)
 @requires_auth("is_staff")
 @inject
 async def update_email_template(
@@ -81,7 +81,7 @@ async def update_email_template(
     return EmailTemplateSchema.model_validate(email_template)
 
 
-@routes.delete("/delete/{uuid}/", tags=["Authenticated"], status_code=status.HTTP_204_NO_CONTENT)
+@routes.delete("/{uuid}/", tags=["Authenticated"], status_code=status.HTTP_204_NO_CONTENT)
 @requires_auth("is_staff")
 @inject
 async def delete_email_template(

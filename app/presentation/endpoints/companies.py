@@ -31,7 +31,7 @@ from app.infrastructure.di import AppContainer
 routes = APIRouter()
 
 
-@routes.get("/get/{uuid}/", tags=["Authenticated"])
+@routes.get("/{uuid}/", tags=["Authenticated"])
 @requires_auth()
 @inject
 async def get_company(
@@ -43,7 +43,7 @@ async def get_company(
     return CompanySchema.model_validate(company)
 
 
-@routes.get("/list/", tags=["Authenticated"])
+@routes.get("/", tags=["Authenticated"])
 @requires_auth()
 @inject
 async def get_company_list(
@@ -55,7 +55,7 @@ async def get_company_list(
     return pagination.get_items(companies)
 
 
-@routes.post("/create/", tags=["Authenticated"], status_code=status.HTTP_201_CREATED)
+@routes.post("/", tags=["Authenticated"], status_code=status.HTTP_201_CREATED)
 @requires_auth()
 @inject
 async def create_company(
@@ -67,7 +67,7 @@ async def create_company(
     return CompanySchema.model_validate(company)
 
 
-@routes.patch("/update/{uuid}/", tags=["Authenticated"], status_code=status.HTTP_200_OK)
+@routes.patch("/{uuid}/", tags=["Authenticated"], status_code=status.HTTP_200_OK)
 @requires_auth()
 @inject
 async def update_company(
@@ -80,7 +80,7 @@ async def update_company(
     return CompanySchema.model_validate(company)
 
 
-@routes.delete("/delete/{uuid}", tags=["Authenticated"], status_code=status.HTTP_204_NO_CONTENT)
+@routes.delete("/{uuid}/", tags=["Authenticated"], status_code=status.HTTP_204_NO_CONTENT)
 @requires_auth()
 @inject
 async def delete_company(

@@ -34,7 +34,7 @@ from app.infrastructure.di import AppContainer
 routes = APIRouter()
 
 
-@routes.get("/list/", tags=["Authenticated"])
+@routes.get("/", tags=["Authenticated"])
 @requires_auth()
 @inject
 async def get_token_list(
@@ -46,7 +46,7 @@ async def get_token_list(
     return pagination.get_items(tokens)
 
 
-@routes.post("/create/", status_code=status.HTTP_201_CREATED, tags=["Anonymous"])
+@routes.post("/", status_code=status.HTTP_201_CREATED, tags=["Anonymous"])
 @handle_exceptions(InvalidUserCredentials)
 @inject
 async def create_token(
@@ -71,7 +71,7 @@ async def revoke_token(
         await revoke_token_command(token_string)
 
 
-@routes.delete("/delete/{uuid}/", status_code=status.HTTP_204_NO_CONTENT, tags=["Authenticated"])
+@routes.delete("/{uuid}/", status_code=status.HTTP_204_NO_CONTENT, tags=["Authenticated"])
 @requires_auth()
 @inject
 async def delete_token(

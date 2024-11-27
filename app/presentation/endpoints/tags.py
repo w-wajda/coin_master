@@ -31,7 +31,7 @@ from app.infrastructure.di import AppContainer
 routes = APIRouter()
 
 
-@routes.get("/get/{uuid}/", tags=["Authenticated"])
+@routes.get("/{uuid}/", tags=["Authenticated"])
 @requires_auth()
 @inject
 async def get_tag(
@@ -43,7 +43,7 @@ async def get_tag(
     return TagSchema.model_validate(tag)
 
 
-@routes.get("/list/", tags=["Authenticated"])
+@routes.get("/", tags=["Authenticated"])
 @requires_auth()
 @inject
 async def get_tag_list(
@@ -55,7 +55,7 @@ async def get_tag_list(
     return pagination.get_items(tags)
 
 
-@routes.post("/create/", tags=["Authenticated"], status_code=status.HTTP_201_CREATED)
+@routes.post("/", tags=["Authenticated"], status_code=status.HTTP_201_CREATED)
 @requires_auth()
 @inject
 async def create_tag(
@@ -67,7 +67,7 @@ async def create_tag(
     return TagSchema.model_validate(tag)
 
 
-@routes.patch("/update/{uuid}/", tags=["Authenticated"], status_code=status.HTTP_200_OK)
+@routes.patch("/{uuid}/", tags=["Authenticated"], status_code=status.HTTP_200_OK)
 @requires_auth()
 @inject
 async def update_tag(
@@ -80,7 +80,7 @@ async def update_tag(
     return TagSchema.model_validate(tag)
 
 
-@routes.delete("/delete/{uuid}", tags=["Authenticated"], status_code=status.HTTP_204_NO_CONTENT)
+@routes.delete("/{uuid}/", tags=["Authenticated"], status_code=status.HTTP_204_NO_CONTENT)
 @requires_auth()
 @inject
 async def delete_tag(
