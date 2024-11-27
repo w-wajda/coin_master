@@ -4,10 +4,10 @@ from fastapi import (
 )
 from fastapi.security import HTTPBearer
 
-from app.presentation.endpoints.tags import routes as tags_routes
 from app.presentation.endpoints.companies import routes as companies_routes
 from app.presentation.endpoints.email_templates import routes as email_templates_routes
 from app.presentation.endpoints.receipts import routes as receipts_routes
+from app.presentation.endpoints.tags import routes as tags_routes
 from app.presentation.endpoints.tokens import routes as tokens_routes
 from app.presentation.endpoints.users import routes as users_routes
 
