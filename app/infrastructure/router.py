@@ -4,6 +4,7 @@ from fastapi import (
 )
 from fastapi.security import HTTPBearer
 
+from app.presentation.endpoints.tags import routes as tags_routes
 from app.presentation.endpoints.companies import routes as companies_routes
 from app.presentation.endpoints.email_templates import routes as email_templates_routes
 from app.presentation.endpoints.receipts import routes as receipts_routes
@@ -32,7 +33,7 @@ async def version():
     return {"version": "0.1.0"}
 
 
-router.include_router(companies_routes, prefix="/v2/tags", dependencies=[Depends(security)])
+router.include_router(tags_routes, prefix="/v2/tags", dependencies=[Depends(security)])
 router.include_router(companies_routes, prefix="/v2/companies", dependencies=[Depends(security)])
 router.include_router(email_templates_routes, prefix="/v2/email_templates", dependencies=[Depends(security)])
 router.include_router(receipts_routes, prefix="/v2/receipts", dependencies=[Depends(security)])
