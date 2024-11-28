@@ -15,6 +15,8 @@ from app.application.commands.items.create_item import CreateItemCommand
 from app.application.commands.items.delete_item import DeleteItemCommand
 from app.application.commands.items.update_item import UpdateItemCommand
 from app.application.commands.receipts.create_receipt import CreateReceiptCommand
+from app.application.commands.receipts.delete_receipt import DeleteReceiptCommand
+from app.application.commands.receipts.update_receipt import UpdateReceiptCommand
 from app.application.queries.items.get_item_list import GetItemListQuery
 from app.application.queries.receipts.get_receipt import GetReceiptQuery
 from app.application.queries.receipts.get_receipt_list import GetReceiptListQuery
@@ -71,6 +73,30 @@ async def create_receipt(
 ) -> ReceiptSchema:
     receipt = await create_receipt_command(user_id=request.user.id, receipt_data=receipt_data)
     return ReceiptSchema.model_validate(receipt)
+
+
+@routes.patch("/{uuid}/", tags=["Authenticated"], status_code=status.HTTP_200_OK)
+@requires_auth()
+@inject
+async def update_receipt(
+    request: Request,
+    uuid: UUID,
+    receipt_data: CreateReceiptSchema,
+    update_receipt_command: UpdateReceiptCommand = Depends(Provide[AppContainer.commands.update_receipt]),
+) -> ReceiptSchema:
+    receipt = await update_receipt_command(user_id=request.user.id, uuid=uuid, receipt_data=receipt_data)
+    return ReceiptSchema.model_validate(receipt)
+
+
+@routes.delete("/{uuid}/", tags=["Authenticated"], status_code=status.HTTP_204_NO_CONTENT)
+@requires_auth()
+@inject
+async def delete_receipt(
+    request: Request,
+    uuid: UUID,
+    delete_receipt_command: DeleteReceiptCommand = Depends(Provide[AppContainer.commands.delete_receipt]),
+) -> None:
+    await delete_receipt_command(user_id=request.user.id, uuid=uuid)
 
 
 @routes.get("/{receipt_uuid}/items/", tags=["Authenticated"])
