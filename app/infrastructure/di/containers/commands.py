@@ -14,6 +14,7 @@ from app.application.commands.items.create_item import CreateItemCommand
 from app.application.commands.items.delete_item import DeleteItemCommand
 from app.application.commands.items.update_item import UpdateItemCommand
 from app.application.commands.receipts.create_receipt import CreateReceiptCommand
+from app.application.commands.receipts.update_receipt import UpdateReceiptCommand
 from app.application.commands.tags.create_tag import CreateTagCommand
 from app.application.commands.tags.delete_tag import DeleteTagCommand
 from app.application.commands.tags.update_tag import UpdateTagCommand
@@ -136,4 +137,8 @@ class CommandContainer(containers.DeclarativeContainer):
 
     create_receipt: Provider[CreateReceiptCommand] = providers.Callable(
         CreateReceiptCommand, receipt_repository=repositories.receipt_repository
+    )
+
+    update_receipt: Provider[UpdateReceiptCommand] = providers.Callable(
+        UpdateReceiptCommand, receipt_repository=repositories.receipt_repository
     )
