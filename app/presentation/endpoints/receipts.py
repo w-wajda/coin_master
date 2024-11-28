@@ -14,7 +14,10 @@ from starlette.requests import Request
 from app.application.commands.items.create_item import CreateItemCommand
 from app.application.commands.items.delete_item import DeleteItemCommand
 from app.application.commands.items.update_item import UpdateItemCommand
+from app.application.commands.receipts.create_receipt import CreateReceiptCommand
 from app.application.queries.items.get_item_list import GetItemListQuery
+from app.application.queries.receipts.get_receipt import GetReceiptQuery
+from app.application.queries.receipts.get_receipt_list import GetReceiptListQuery
 from app.application.services.pagination import (
     PaginatedSchema,
     PaginationService,
@@ -23,11 +26,51 @@ from app.domain.items.item_schemas import (
     CreateItemSchema,
     ItemSchema,
 )
+from app.domain.receipts.receipt_schemas import (
+    CreateReceiptSchema,
+    ReceiptSchema,
+)
 from app.infrastructure.decorators import requires_auth
 from app.infrastructure.di import AppContainer
 
 
 routes = APIRouter()
+
+
+@routes.get("/{uuid}/", tags=["Authenticated"])
+@requires_auth()
+@inject
+async def get_receipt(
+    request: Request,
+    uuid: UUID,
+    get_receipt_query: GetReceiptQuery = Depends(Provide[AppContainer.queries.get_receipt]),
+) -> ReceiptSchema:
+    receipt = await get_receipt_query(user_id=request.user.id, uuid=uuid)
+    return ReceiptSchema.model_validate(receipt)
+
+
+@routes.get("/", tags=["Authenticated"])
+@requires_auth()
+@inject
+async def get_receipt_list(
+    request: Request,
+    get_receipt_list_query: GetReceiptListQuery = Depends(Provide[AppContainer.queries.get_receipt_list]),
+    pagination: PaginationService = Depends(),
+) -> PaginatedSchema[ReceiptSchema]:
+    receipts = await get_receipt_list_query(user_id=request.user.id, limit=pagination.limit, offset=pagination.offset)
+    return pagination.get_items(receipts)
+
+
+@routes.post("/", tags=["Authenticated"], status_code=status.HTTP_201_CREATED)
+@requires_auth()
+@inject
+async def create_receipt(
+    request: Request,
+    receipt_data: CreateReceiptSchema,
+    create_receipt_command: CreateReceiptCommand = Depends(Provide[AppContainer.commands.create_receipt]),
+) -> ReceiptSchema:
+    receipt = await create_receipt_command(user_id=request.user.id, receipt_data=receipt_data)
+    return ReceiptSchema.model_validate(receipt)
 
 
 @routes.get("/{receipt_uuid}/items/", tags=["Authenticated"])

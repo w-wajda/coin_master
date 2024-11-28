@@ -13,6 +13,7 @@ from app.application.commands.email_templates.update_email_template import Updat
 from app.application.commands.items.create_item import CreateItemCommand
 from app.application.commands.items.delete_item import DeleteItemCommand
 from app.application.commands.items.update_item import UpdateItemCommand
+from app.application.commands.receipts.create_receipt import CreateReceiptCommand
 from app.application.commands.tags.create_tag import CreateTagCommand
 from app.application.commands.tags.delete_tag import DeleteTagCommand
 from app.application.commands.tags.update_tag import UpdateTagCommand
@@ -131,4 +132,8 @@ class CommandContainer(containers.DeclarativeContainer):
     delete_item: Provider[DeleteItemCommand] = providers.Callable(
         DeleteItemCommand,
         item_repository=repositories.item_repository,
+    )
+
+    create_receipt: Provider[CreateReceiptCommand] = providers.Callable(
+        CreateReceiptCommand, receipt_repository=repositories.receipt_repository
     )
