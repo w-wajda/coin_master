@@ -14,6 +14,7 @@ import app.domain.email_templates.email  # noqa: F401
 import app.domain.tags.tag  # noqa: F401
 import app.domain.items.item # noqa: F401
 import app.domain.receipts.receipt # noqa: F401
+import app.domain.receipt_tags.receipt_tag # noqa: F401
 
 from app.domain.common.base import Base
 from app.infrastructure.conf import settings
