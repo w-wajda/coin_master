@@ -1,0 +1,171 @@
+# PLAN DZIAŁANIA - Aplikacja Coin Master (Zarządzanie Paragonami)
+
+## 🎯 Cel Projektu
+Aplikacja do zarządzania paragonami z analizą wydatków, śledzeniem cen produktów i zarządzaniem gwarancjami.
+
+---
+
+## 📊 CURRENT STATE BACKENDU
+
+### ✅ Co już istnieje:
+- FastAPI + SQLAlchemy 2.0 + asyncpg
+- Clean Architecture (domain, application, infrastructure, presentation)
+- User, Company, Receipt, Item entities
+- Docker setup (PostgreSQL, Redis, MinIO)
+- Pydantic validations
+- S3-compatible storage (Boto3/MinIO)
+- Email integration (fastapi-mail)
+- Pre-commit hooks, testing setup
+
+### Tech Stack:
+- Python 3.12.7
+- FastAPI 0.115.4
+- SQLAlchemy 2.0.36
+- PostgreSQL + asyncpg
+- Redis (caching, message broker)
+- MinIO/S3 (photo storage)
+- Pillow (image processing)
+- PyTest + Factory Boy (testing)
+- Sentry (error monitoring)
+- Line length: 120 chars (Black, isort)
+
+---
+
+## ⚠️ BRAKUJĄCE ELEMENTY NA MVP
+
+### Receipt model - brakuje:
+- date_purchase: datetime (kiedy kupiono)
+- notes: Optional[str] (uwagi o garantii, itp.)
+- created_at, updated_at timestamps
+
+### Item model - brakuje:
+- quantity: Decimal (ilość produktu)
+- unit: str (szt, kg, litr, etc.)
+- unit_price: Decimal (cena za jednostkę)
+- category: str (spożywcze, ubraniowe, etc.)
+- tags: relacja do tagsów
+
+### Nowe entities potrzebne:
+1. **Category** - kategorie produktów (hierarchiczna struktura)
+2. **Tag** - tagi do paragońskiego, produktów
+3. **Warranty** - informacje o gwarancji (data_wygaśnięcia, produkt, notificatin_email)
+4. **Receipt_History** - historia cen produktów
+5. **UserPreferences** - ustawienia użytkownika
+
+### Company model - brakuje:
+- address: str
+- city: str
+- phone: Optional[str]
+- website: Optional[str]
+- store_type: str (supermarket, sklep odzieżowy, etc.)
+
+---
+
+## 🎁 MVP SCOPE
+
+### Phase 1: Upload & Manual Entry
+- [ ] Zdjęcie paragonu (S3 upload)
+- [ ] Uzupełnienie danych paragraonu (data, sklep, kwota)
+- [ ] Dodawanie produktów z kategorią i ilością
+- [ ] Wylistowanie moich paragonów
+- [ ] Edycja/usuwanie paragraonu i produktów
+
+### Phase 2: OCR (optional, graceful degradation)
+- [ ] Wczytanie zdjęcia
+- [ ] Próba ekstrakcji tekstu z OCR
+- [ ] Jeśli OCR ma problemy → wypełnianie ręczne
+- [ ] Zaproponowanie kategorii na podstawie nazwy produktu
+
+### Phase 3: Analytics & Insights
+- [ ] Wydatki: dzień, tydzień, miesiąc, rok
+- [ ] Wydatki wg kategorii
+- [ ] Średnia wartość paragraonu
+- [ ] Top produkty (najczęściej kupowane)
+- [ ] Historia cen produktu (trend)
+
+### Phase 4: Warranty Management
+- [ ] Dodawanie info o gwarancji do produktu
+- [ ] Email reminder przed wygaśnięciem gwarancji
+- [ ] Lista aktywnych gwarancji
+
+### Phase 5: Mobile (React Native)
+- [ ] Ekran kamery (upload zdjęcia)
+- [ ] Ekran edycji paragraonu
+- [ ] Lista paragonów
+- [ ] Analytics dashboard
+- [ ] Ustawienia
+
+---
+
+## 🔧 NASTĘPNE KROKI
+
+### 1. Backend - Rozszerzenie modelu (Priority: HIGH)
+- [ ] Zaktualizować Receipt model
+- [ ] Zaktualizować Item model
+- [ ] Dodać Category model
+- [ ] Dodać Warranty model
+- [ ] Napisać migracje Alembic
+
+### 2. Backend - API endpoints (Priority: HIGH)
+- [ ] POST /receipts (upload zdjęcia + dane)
+- [ ] GET /receipts (list z filtrowaniem)
+- [ ] PUT /receipts/{id} (edycja)
+- [ ] DELETE /receipts/{id}
+- [ ] POST /receipts/{id}/items (dodaj produkty)
+- [ ] GET /analytics/expenses (wydatki po okresach)
+- [ ] GET /analytics/categories (wydatki po kategoriach)
+- [ ] POST /warranties (dodaj gwarancję)
+- [ ] GET /warranties (lista gwarancji)
+
+### 3. Backend - OCR (Priority: MEDIUM)
+- [ ] Wybrać bibliotekę OCR (Tesseract, EasyOCR, AWS Textract?)
+- [ ] Zaimplementować pipeline ekstrakcji tekstu
+- [ ] Mapowanie extracted text do pól Receipt/Items
+- [ ] Fallback na manual entry
+
+### 4. Frontend - React Native (Priority: HIGH)
+- [ ] Setup React Native + Expo
+- [ ] Ekran logowania/rejestracji
+- [ ] Ekran upload zdjęcia
+- [ ] Ekran edycji paragraonu
+- [ ] Lista paragonów
+- [ ] Analytics screens
+
+### 5. DevOps
+- [ ] Docker Compose dla lokalnego dev
+- [ ] CI/CD pipeline (GitHub Actions?)
+- [ ] Deployment (AWS/DigitalOcean/Railway?)
+
+---
+
+## 💡 NOTATKI DODATKOWE
+
+### Monetyzacja (deferred na later):
+- MVP za darmo
+- Paid tier: premium analytics, warranty notifications, export PDF
+- Po osiągnięciu product-market fit
+
+### GDPR:
+- Nazwy sklepów (company names) NIE są danymi osobowymi → OK
+- Zdjęcia paragonów mogą zawierać dane wrażliwe → secure storage
+- Email do notifications wymaga opt-in
+
+### Graceful degradation:
+- Jeśli OCR zawiedzie → użytkownik dostaje notę o niedokładności
+- Możliwość edycji/dopisania ręcznego
+- Część danych czytana, część do manual entry
+
+---
+
+## 📝 GIT BRANCH
+- Current branch: `coin-master-development` (lub podobna)
+- Main branch: `master`
+
+---
+
+## ⏭️ NASTĘPNA AKCJA
+Przygotować plan architektoniczny w PlanMode, który będzie obejmował:
+1. Finalizację backend modelu
+2. API specification
+3. React Native architecture
+4. Database schema
