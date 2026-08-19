@@ -34,8 +34,8 @@ FROM base as builder-deps
 
 RUN apt-get install build-essential --no-install-recommends -y
 
-COPY poetry.lock  pyproject.toml ./
-RUN poetry install --only main
+COPY poetry.lock  pyproject.toml  README.md ./
+RUN poetry install --only main --no-root
 
 
 FROM base AS runtime

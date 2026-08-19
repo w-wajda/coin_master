@@ -22,10 +22,11 @@ from app.version import __VERSION__
 def initialize_app(di_container=None):
     app = FastAPI(title="Coin master API", version=__VERSION__)
 
-    app.add_middleware(TrustedHostMiddleware, allowed_hosts=["coin-master.devsoft.pl", "localhost"])
-    app.add_middleware(ProxyHeadersMiddleware)
     from app.infrastructure.auth import DefaultAuthenticationBackend
     from app.infrastructure.conf import settings
+
+    app.add_middleware(TrustedHostMiddleware, allowed_hosts=settings.ALLOWED_HOSTS)
+    app.add_middleware(ProxyHeadersMiddleware)
 
     app.add_middleware(
         CORSMiddleware,

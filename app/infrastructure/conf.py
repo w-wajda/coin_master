@@ -7,6 +7,7 @@ from pydantic import (
     EmailStr,
     PostgresDsn,
     UrlConstraints,
+    field_validator,
 )
 from pydantic_core import (
     MultiHostUrl,
@@ -42,7 +43,29 @@ class Settings(BaseSettings):
 
     PAGINATION_DEFAULT_LIMIT: int = 20
 
+    # Storage (S3-compatible: MinIO lokalnie, AWS S3 na produkcji)
+    AWS_REGION_NAME: str = "us-east-1"
+    AWS_ACCESS_KEY: str = ""
+    AWS_ACCESS_KEY_SECRET: str = ""
+    AWS_S3_BUCKET_NAME: str = "coin-master"
+    AWS_S3_BUCKET_URL: str = ""
+    AWS_ENDPOINT_URL: str = ""  # puste = AWS; "http://minio:9000" = MinIO
+
+    # Czasy życia linków (sekundy)
+    SCAN_URL_EXPIRES_IN: int = 900  # 15 min — podgląd w aplikacji
+    SHARE_URL_EXPIRES_IN: int = 604800  # 7 dni — maksimum AWS SigV4
+
+    # Hosty dozwolone przez TrustedHostMiddleware
+    ALLOWED_HOSTS: list[str] = ["coin-master.devsoft.pl", "localhost", "api", "127.0.0.1"]
+
     model_config = SettingsConfigDict(env_file=".env")
+
+    @field_validator("SHARE_URL_EXPIRES_IN")
+    @classmethod
+    def validate_share_url_expires_in(cls, value: int) -> int:
+        if value > 604800:
+            raise ValueError("SHARE_URL_EXPIRES_IN nie może przekroczyć 604800 s (limit AWS SigV4)")
+        return value
 
 
 @lru_cache()

@@ -4,6 +4,7 @@ from fastapi import (
 )
 from fastapi.security import HTTPBearer
 
+from app.infrastructure.conf import settings
 from app.presentation.endpoints.companies import routes as companies_routes
 from app.presentation.endpoints.email_templates import routes as email_templates_routes
 from app.presentation.endpoints.receipts import routes as receipts_routes
@@ -22,10 +23,12 @@ async def health():
     return {"status": "ok"}
 
 
-@router.get("/sentry-debug/")
-async def trigger_error():
-    division_by_zero = 1 / 0
-    return division_by_zero
+if settings.DEBUG:
+
+    @router.get("/sentry-debug/")
+    async def trigger_error():
+        division_by_zero = 1 / 0
+        return division_by_zero
 
 
 @router.get("/version/")
