@@ -16,5 +16,5 @@ class TagFactory(factory.Factory):
 
 
 class TagDictFactory(factory.DictFactory):
-    name = factory.SubFactory(lambda n: "Name %03d" % n)
+    name = factory.Sequence(lambda n: "Name %03d" % n)
     user = factory.SubFactory(UserDictFactory)
