@@ -146,6 +146,10 @@ version_toml = ["pyproject.toml:project.version"]
 commit_message = "chore(release): {version}"
 tag_format = "v{version}"
 commit_author = "github-actions <action@devsoft.pl>"
+build_command = """
+    uv lock --upgrade-package "$PACKAGE_NAME"
+    git add uv.lock
+"""
 
 [tool.semantic_release.branches.main]
 match = "(main|master)"
