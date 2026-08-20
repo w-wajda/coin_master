@@ -1,4 +1,3 @@
-from contextlib import asynccontextmanager
 from typing import Optional
 
 import sqlalchemy as sa
@@ -20,19 +19,6 @@ class SQLAlchemyUserRepository(IUserRepository, GenericSQLAlchemyRepository[User
         cursor = await self.session.execute(statement)
         return cursor.scalar()
 
-    async def get_public_profile(self, user_uuid: str) -> Optional[User]:
-        if self.session is None:
-            raise ValueError("Session is not initialized")
-
-        statement = (
-            select(self.model).where(self.model.uuid == user_uuid)
-            # exclude users who are not ready
-            .filter(User.is_ready.is_(True))
-        )
-
-        cursor = await self.session.execute(statement)
-        return cursor.scalar()
-
     async def get_by_email(self, email: str) -> Optional[User]:
         """Get user by email"""
         if self.session is None:
@@ -42,7 +28,3 @@ class SQLAlchemyUserRepository(IUserRepository, GenericSQLAlchemyRepository[User
 
         cursor = await self.session.execute(statement)
         return cursor.scalar()
-
-    @asynccontextmanager
-    async def begin(self):
-        yield self.session

@@ -29,12 +29,3 @@ class Token(Base):
 
         if not self.token:
             self.token = binascii.hexlify(os.urandom(20)).decode()
-
-    @property
-    def scopes(self) -> list[str]:
-        scopes = ["authenticated"]
-
-        if self.user.is_staff:
-            scopes.append("staff")
-
-        return scopes

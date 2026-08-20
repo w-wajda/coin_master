@@ -1,3 +1,4 @@
+import enum
 import random
 import string
 from datetime import datetime
@@ -16,7 +17,11 @@ from app.domain.users.user import User
 class EmailToken(Base):
     __tablename__ = "email_tokens"
 
+    class TYPES(enum.Enum):
+        password_reset = "password_reset"
+
     token: Mapped[str] = mapped_column(sa.String(40), unique=True, nullable=False)
+    type: Mapped[str] = mapped_column(sa.Enum(TYPES, name="email_token_type"), nullable=False)
 
     user_id: Mapped[int] = mapped_column(sa.ForeignKey("users.id"))
     user: Mapped[User] = relationship(lazy="joined", backref="email_tokens")

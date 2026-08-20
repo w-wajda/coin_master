@@ -8,6 +8,7 @@ from alembic import context
 from sqlalchemy.ext.asyncio import create_async_engine
 
 import app.domain.users.user  # noqa: F401
+import app.domain.users.email_token  # noqa: F401
 import app.domain.tokens.token  # noqa: F401
 import app.domain.companies.company  # noqa: F401
 import app.domain.email_templates.email  # noqa: F401

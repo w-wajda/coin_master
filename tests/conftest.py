@@ -139,6 +139,32 @@ async def authenticated_client(client, token):
 
 
 @pytest.fixture
+async def staff_user(session_maker):
+    async with session_maker() as session:
+        obj = UserFactory(is_staff=True)
+        session.add(obj)
+        await session.commit()
+        await session.refresh(obj)
+    return obj
+
+
+@pytest.fixture
+async def staff_token(session_maker, staff_user):
+    async with session_maker() as session:
+        obj = TokenFactory(user=staff_user)
+        session.add(obj)
+        await session.commit()
+        await session.refresh(obj)
+    return obj
+
+
+@pytest.fixture
+async def staff_client(client, staff_token):
+    client.headers["Authorization"] = f"Token {staff_token.token}"
+    return client
+
+
+@pytest.fixture
 async def company(session_maker, user):
     async with session_maker() as session:
         obj = CompanyFactory(user=user)

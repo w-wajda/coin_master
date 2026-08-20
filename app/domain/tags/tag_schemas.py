@@ -15,4 +15,3 @@ class TagSchema(BaseModel):
 
 class CreateTagSchema(BaseModel):
     name: str
-    address: str

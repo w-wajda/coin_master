@@ -45,7 +45,7 @@ logger = logging.getLogger(__name__)
 routes = APIRouter()
 
 
-@routes.get("/{uuid/", tags=["Authenticated"])
+@routes.get("/{uuid}/", tags=["Authenticated"])
 @requires_auth()
 @inject
 async def get_user(
@@ -55,13 +55,6 @@ async def get_user(
     """Get the authenticated user (current user details)"""
     user = await get_user_query(user_id=request.user.id)
     return UserSchema.model_validate(user)
-
-
-@routes.get("/list/", tags=["Authenticated"])
-@requires_auth()
-@inject
-async def get_user_list():
-    pass
 
 
 @routes.post("/", status_code=status.HTTP_201_CREATED, tags=["Anonymous"])
@@ -93,13 +86,6 @@ async def patch_user(
     """Update the authenticated user (update user details)"""
     user = await update_user_command(user_id=request.user.id, user_data=user_data)
     return UserSchema.model_validate(user)
-
-
-@routes.get("/{uuid}/", tags=["Authenticated"])
-@requires_auth()
-@inject
-async def delete_user():
-    pass
 
 
 @routes.post("/change-password/", tags=["Authenticated"], status_code=status.HTTP_204_NO_CONTENT)

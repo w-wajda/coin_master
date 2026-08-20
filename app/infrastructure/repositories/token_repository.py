@@ -42,7 +42,7 @@ class SQLAlchemyTokenRepository(ITokenRepository, GenericSQLAlchemyRepository[To
         if offset:
             statement = statement.offset(offset)
 
-        statement = statement.order_by(self.model.last_activity.desc())
+        statement = statement.order_by(self.model.created.desc())
 
         cursor = await self.session.execute(statement)
         return cursor.scalars().all()
