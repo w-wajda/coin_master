@@ -21,9 +21,7 @@ async def test_reset_password_flow(client, session_maker, user):
     old_password_login = await client.post("/v2/tokens/", json={"email": user.email, "password": "password"})
     assert old_password_login.status_code == 400
 
-    new_password_login = await client.post(
-        "/v2/tokens/", json={"email": user.email, "password": "newpassword123"}
-    )
+    new_password_login = await client.post("/v2/tokens/", json={"email": user.email, "password": "newpassword123"})
     assert new_password_login.status_code == 201
 
 

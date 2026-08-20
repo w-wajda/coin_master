@@ -36,9 +36,7 @@ async def test_create_item_success(command, user_repository, item_repository, re
     receipt = MagicMock(id=42)
     receipt_repository.get_by.return_value = receipt
 
-    item = await command(
-        user_id=1, receipt_uuid=uuid.uuid4(), item_data=CreateItemSchema(name="Mleko", price="4.99")
-    )
+    item = await command(user_id=1, receipt_uuid=uuid.uuid4(), item_data=CreateItemSchema(name="Mleko", price="4.99"))
 
     assert item.receipt_id == 42
     item_repository.add.assert_called_once_with(item)

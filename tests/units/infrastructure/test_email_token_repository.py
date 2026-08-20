@@ -16,11 +16,11 @@ def repository(session_maker):
 
 
 def _token(user, **overrides):
-    defaults = dict(
-        user=user,
-        expires_at=datetime.now(timezone.utc) + timedelta(days=1),
-        type=EmailToken.TYPES.password_reset.value,
-    )
+    defaults = {
+        "user": user,
+        "expires_at": datetime.now(timezone.utc) + timedelta(days=1),
+        "type": EmailToken.TYPES.password_reset.value,
+    }
     defaults.update(overrides)
     return EmailToken(**defaults)
 

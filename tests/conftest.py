@@ -106,8 +106,8 @@ def container(session_maker, storage):
 
 @pytest.fixture
 async def client(container):
-    app = initialize_app(di_container=container)
-    transport = ASGITransport(app=app)
+    asgi_app = initialize_app(di_container=container)
+    transport = ASGITransport(app=asgi_app)
     async with AsyncClient(transport=transport, base_url="http://localhost") as ac:
         yield ac
 

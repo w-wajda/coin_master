@@ -12,6 +12,23 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    services:
+      # Testy jednostkowe/integracyjne używają FakeS3StorageRepository (bez sieci,
+      # bez Dockera) — patrz tests/conftest.py::storage. MinIO nie jest tu potrzebne.
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+
     steps:
       # check-out repo
       - name: Checkout repository
@@ -28,15 +45,20 @@ jobs:
       - name: Install poetry dependencies
         run: poetry install --no-interaction
 
-      - name: Pytest
-        env:
-          SECRET_KEY: "abc"
-          DATABASE_URL: "sqlite://test.db"
+      - name: Lint
         run: |
           poetry run black --check .
           poetry run flake8 .
           poetry run isort --check-only .
-          poetry run python manage.py test
+
+      - name: Mypy
+        continue-on-error: true
+        run: poetry run mypy .
+
+      - name: Pytest
+        env:
+          DATABASE_URL: "postgresql+asyncpg://postgres:postgres@localhost:5432/postgres"
+        run: poetry run pytest --cov=app --cov-report=term-missing
 
 
   release:

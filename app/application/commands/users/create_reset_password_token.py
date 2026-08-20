@@ -28,10 +28,10 @@ class CreateResetPasswordTokenCommand:
 
             user = await self.user_repository.get_by_email(reset_password_data.email)
             if not user:
-                # The endpoint returns a 204 (No Content) status to avoid disclosing whether a user with the provided email
-                # exists.
-                # This is intentionally implemented for security reasons, to prevent revealing information about the
-                # existence or non-existence of a user (protection against enumeration attacks).
+                # The endpoint returns a 204 (No Content) status to avoid disclosing whether a user
+                # with the provided email exists. This is intentionally implemented for security
+                # reasons, to prevent revealing information about the existence or non-existence of
+                # a user (protection against enumeration attacks).
                 raise HTTPException(status_code=status.HTTP_204_NO_CONTENT, detail=None)
 
             expires_at = datetime.now(tz=timezone.utc) + timedelta(days=14)

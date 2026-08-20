@@ -36,9 +36,7 @@ async def test_update_tag(authenticated_client):
 
 
 async def test_update_tag_not_found(authenticated_client):
-    response = await authenticated_client.patch(
-        "/v2/tags/00000000-0000-0000-0000-000000000000/", json={"name": "Food"}
-    )
+    response = await authenticated_client.patch("/v2/tags/00000000-0000-0000-0000-000000000000/", json={"name": "Food"})
     assert response.status_code == 404
 
 

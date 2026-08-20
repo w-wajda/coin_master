@@ -47,17 +47,13 @@ async def test_update_email_template(staff_client):
     create_response = await staff_client.post("/v2/email_templates/", json=_payload())
     template_uuid = create_response.json()["uuid"]
 
-    response = await staff_client.patch(
-        f"/v2/email_templates/{template_uuid}/", json=_payload(subject="Updated")
-    )
+    response = await staff_client.patch(f"/v2/email_templates/{template_uuid}/", json=_payload(subject="Updated"))
     assert response.status_code == 200
     assert response.json()["subject"] == "Updated"
 
 
 async def test_update_email_template_not_found(staff_client):
-    response = await staff_client.patch(
-        "/v2/email_templates/00000000-0000-0000-0000-000000000000/", json=_payload()
-    )
+    response = await staff_client.patch("/v2/email_templates/00000000-0000-0000-0000-000000000000/", json=_payload())
     assert response.status_code == 404
 
 
