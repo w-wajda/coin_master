@@ -26,17 +26,17 @@ class CreateResetPasswordTokenCommand:
         async with self.user_repository.start_session() as session:
             self.email_token_repository.use_session(session)
 
-        user = await self.user_repository.get_by_email(reset_password_data.email)
-        if not user:
-            # The endpoint returns a 204 (No Content) status to avoid disclosing whether a user with the provided email
-            # exists.
-            # This is intentionally implemented for security reasons, to prevent revealing information about the
-            # existence or non-existence of a user (protection against enumeration attacks).
-            raise HTTPException(status_code=status.HTTP_204_NO_CONTENT, detail=None)
+            user = await self.user_repository.get_by_email(reset_password_data.email)
+            if not user:
+                # The endpoint returns a 204 (No Content) status to avoid disclosing whether a user with the provided email
+                # exists.
+                # This is intentionally implemented for security reasons, to prevent revealing information about the
+                # existence or non-existence of a user (protection against enumeration attacks).
+                raise HTTPException(status_code=status.HTTP_204_NO_CONTENT, detail=None)
 
-        expires_at = datetime.now(tz=timezone.utc) + timedelta(days=14)
-        email_token = EmailToken(user=user, expires_at=expires_at, type=EmailToken.TYPES.password_reset.value)
+            expires_at = datetime.now(tz=timezone.utc) + timedelta(days=14)
+            email_token = EmailToken(user=user, expires_at=expires_at, type=EmailToken.TYPES.password_reset.value)
 
-        self.email_token_repository.add(email_token)
-        await self.email_token_repository.commit()
-        return None
+            self.email_token_repository.add(email_token)
+            await self.email_token_repository.commit()
+            return None

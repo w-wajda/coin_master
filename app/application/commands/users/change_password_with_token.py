@@ -17,14 +17,14 @@ class ChangePasswordWithTokenCommand:
         async with self.email_token_repository.start_session() as session:
             self.user_repository.use_session(session)
 
-        email_token = await self.email_token_repository.get_by_reset_password_token(token)
+            email_token = await self.email_token_repository.get_by_reset_password_token(token)
 
-        if not email_token:
-            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Token is invalid or expired")
+            if not email_token:
+                raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Token is invalid or expired")
 
-        user = email_token.user
-        user.set_password(change_password_with_token_schema.password1)
-        await self.user_repository.commit()
+            user = email_token.user
+            user.set_password(change_password_with_token_schema.password1)
+            await self.user_repository.commit()
 
-        email_token.is_used = True
-        await self.email_token_repository.commit()
+            email_token.is_used = True
+            await self.email_token_repository.commit()

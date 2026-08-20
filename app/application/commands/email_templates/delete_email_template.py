@@ -15,5 +15,6 @@ class DeleteEmailTemplateCommand:
             if email_template := await self.email_template_repository.get_by(uuid=uuid):
                 await self.email_template_repository.delete(email_template)
                 await self.email_template_repository.commit()
+                return
 
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Email template not found")

@@ -23,5 +23,6 @@ class DeleteTagCommand:
             if tag := await self.tag_repository.get_by(user_id=user_id, uuid=uuid):
                 await self.tag_repository.delete(tag)
                 await self.tag_repository.commit()
+                return
 
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Tag not found")

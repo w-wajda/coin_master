@@ -23,5 +23,6 @@ class DeleteCompanyCommand:
             if company := await self.company_repository.get_by(user_id=user_id, uuid=uuid):
                 await self.company_repository.delete(company)
                 await self.company_repository.commit()
+                return
 
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Company not found")

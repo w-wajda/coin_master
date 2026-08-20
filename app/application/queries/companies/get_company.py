@@ -28,4 +28,4 @@ class GetCompanyQuery:
             if company := await self.company_repository.get_by(user_id=user_id, uuid=uuid):
                 return company
 
-            raise HTTPException(status_code=status.HTTP_404_NOT_FOUNDT, detail="Company not found")
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Company not found")

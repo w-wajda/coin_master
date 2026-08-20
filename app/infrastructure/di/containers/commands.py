@@ -93,57 +93,75 @@ class CommandContainer(containers.DeclarativeContainer):
 
     create_company: Provider[CreateCompanyCommand] = providers.Callable(
         CreateCompanyCommand,
+        user_repository=repositories.user_repository,
         company_repository=repositories.company_repository,
     )
 
     update_company: Provider[UpdateCompanyCommand] = providers.Callable(
         UpdateCompanyCommand,
+        user_repository=repositories.user_repository,
         company_repository=repositories.company_repository,
     )
 
     delete_company: Provider[DeleteCompanyCommand] = providers.Callable(
         DeleteCompanyCommand,
+        user_repository=repositories.user_repository,
         company_repository=repositories.company_repository,
     )
 
     create_tag: Provider[CreateTagCommand] = providers.Callable(
         CreateTagCommand,
+        user_repository=repositories.user_repository,
         tag_repository=repositories.tag_repository,
     )
 
     update_tag: Provider[UpdateTagCommand] = providers.Callable(
         UpdateTagCommand,
+        user_repository=repositories.user_repository,
         tag_repository=repositories.tag_repository,
     )
 
     delete_tag: Provider[DeleteTagCommand] = providers.Callable(
         DeleteTagCommand,
+        user_repository=repositories.user_repository,
         tag_repository=repositories.tag_repository,
     )
 
     create_item: Provider[CreateItemCommand] = providers.Callable(
         CreateItemCommand,
+        user_repository=repositories.user_repository,
         item_repository=repositories.item_repository,
+        receipt_repository=repositories.receipt_repository,
     )
 
     update_item: Provider[UpdateItemCommand] = providers.Callable(
         UpdateItemCommand,
+        user_repository=repositories.user_repository,
         item_repository=repositories.item_repository,
+        receipt_repository=repositories.receipt_repository,
     )
 
     delete_item: Provider[DeleteItemCommand] = providers.Callable(
         DeleteItemCommand,
+        user_repository=repositories.user_repository,
         item_repository=repositories.item_repository,
+        receipt_repository=repositories.receipt_repository,
     )
 
     create_receipt: Provider[CreateReceiptCommand] = providers.Callable(
-        CreateReceiptCommand, receipt_repository=repositories.receipt_repository
+        CreateReceiptCommand,
+        user_repository=repositories.user_repository,
+        receipt_repository=repositories.receipt_repository,
     )
 
     update_receipt: Provider[UpdateReceiptCommand] = providers.Callable(
-        UpdateReceiptCommand, receipt_repository=repositories.receipt_repository
+        UpdateReceiptCommand,
+        user_repository=repositories.user_repository,
+        receipt_repository=repositories.receipt_repository,
     )
 
     delete_receipt: Provider[DeleteReceiptCommand] = providers.Callable(
-        DeleteReceiptCommand, receipt_repository=repositories.receipt_repository
+        DeleteReceiptCommand,
+        user_repository=repositories.user_repository,
+        receipt_repository=repositories.receipt_repository,
     )

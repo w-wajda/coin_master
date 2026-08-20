@@ -1,9 +1,9 @@
 import sqlalchemy as sa
 from sqlalchemy.orm import (
     Mapped,
+    mapped_column,
     relationship,
 )
-from sqlalchemy.testing.schema import mapped_column
 
 from app.domain.common.base import Base
 from app.domain.receipts.receipt import Receipt

@@ -48,27 +48,44 @@ class QueryContainer(containers.DeclarativeContainer):
     )
 
     get_company: Provider[GetCompanyQuery] = providers.Callable(
-        GetCompanyQuery, company_repository=repositories.company_repository
+        GetCompanyQuery,
+        user_repository=repositories.user_repository,
+        company_repository=repositories.company_repository,
     )
 
     get_company_list: Provider[GetCompanyListQuery] = providers.Callable(
-        GetCompanyListQuery, company_repository=repositories.company_repository
+        GetCompanyListQuery,
+        user_repository=repositories.user_repository,
+        company_repository=repositories.company_repository,
     )
 
-    get_tag: Provider[GetTagQuery] = providers.Callable(GetTagQuery, tag_repository=repositories.tag_repository)
+    get_tag: Provider[GetTagQuery] = providers.Callable(
+        GetTagQuery,
+        user_repository=repositories.user_repository,
+        tag_repository=repositories.tag_repository,
+    )
 
     get_tag_list: Provider[GetTagListQuery] = providers.Callable(
-        GetTagListQuery, tag_repository=repositories.tag_repository
+        GetTagListQuery,
+        user_repository=repositories.user_repository,
+        tag_repository=repositories.tag_repository,
     )
 
     get_item_list: Provider[GetItemListQuery] = providers.Callable(
-        GetItemListQuery, item_repository=repositories.item_repository
+        GetItemListQuery,
+        user_repository=repositories.user_repository,
+        item_repository=repositories.item_repository,
+        receipt_repository=repositories.receipt_repository,
     )
 
     get_receipt: Provider[GetReceiptQuery] = providers.Callable(
-        GetReceiptQuery, receipt_repository=repositories.receipt_repository
+        GetReceiptQuery,
+        user_repository=repositories.user_repository,
+        receipt_repository=repositories.receipt_repository,
     )
 
     get_receipt_list: Provider[GetReceiptListQuery] = providers.Callable(
-        GetReceiptListQuery, receipt_repository=repositories.receipt_repository
+        GetReceiptListQuery,
+        user_repository=repositories.user_repository,
+        receipt_repository=repositories.receipt_repository,
     )

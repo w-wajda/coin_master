@@ -16,13 +16,13 @@ class CreateReceiptCommand:
         async with self.user_repository.start_session() as session:
             self.receipt_repository.use_session(session)
 
-        user = await self.user_repository.get(user_id)
-        if not user:
-            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
+            user = await self.user_repository.get(user_id)
+            if not user:
+                raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
 
-        receipt = Receipt(**receipt_data.model_dump())
-        receipt.user_id = user_id
+            receipt = Receipt(**receipt_data.model_dump())
+            receipt.user_id = user_id
 
-        self.receipt_repository.add(receipt)
-        await self.receipt_repository.commit()
-        return receipt
+            self.receipt_repository.add(receipt)
+            await self.receipt_repository.commit()
+            return receipt

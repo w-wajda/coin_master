@@ -32,5 +32,6 @@ class DeleteItemCommand:
             if item := await self.item_repository.get_by(receipt_id=receipt.id, uuid=uuid):
                 await self.item_repository.delete(item)
                 await self.item_repository.commit()
+                return
 
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Item not found")

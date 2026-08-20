@@ -23,5 +23,6 @@ class DeleteReceiptCommand:
             if receipt := await self.receipt_repository.get_by(user_id=user_id, uuid=uuid):
                 await self.receipt_repository.delete(receipt)
                 await self.receipt_repository.commit()
+                return
 
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Receipt not found")

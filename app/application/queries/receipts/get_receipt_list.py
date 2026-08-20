@@ -1,4 +1,5 @@
-from mypy.server.objgraph import Iterable
+from typing import Iterable
+
 from starlette import status
 
 from app.domain.exceptions import HTTPException
