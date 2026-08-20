@@ -425,14 +425,14 @@ Sekcje `[tool.pytest.ini_options]`, `[tool.black]`, `[tool.isort]`, `[tool.cover
 
 Drobiazgi do zrobienia gdzieś w trakcie Fazy 0:
 
-- [ ] `PaginatedSchema` — dodać `total` i `pages` (`services/pagination.py:23-27`);
+- [x] `PaginatedSchema` — dodać `total` i `pages` (`services/pagination.py:23-27`);
       bez tego front nie zbuduje paginatora
-- [ ] `locust` — usunąć z zależności albo dopisać pierwszy scenariusz
-- [ ] `redis` — usunąć z zależności produkcyjnych do czasu realnego użycia
+- [x] `locust` — usunąć z zależności albo dopisać pierwszy scenariusz
+- [x] `redis` — usunąć z zależności produkcyjnych do czasu realnego użycia
       (wraca w [04_ZAAWANSOWANE.md](04_ZAAWANSOWANE.md))
-- [ ] `ruff` — skonfigurować albo usunąć; decyzja odłożona do fazy zaawansowanej
-- [ ] `README.md` jest pusty — minimalna instrukcja uruchomienia
-- [ ] Sprawdzić, czy `psycopg` i `psycopg2-binary` są potrzebne obok `asyncpg`
+- [x] `ruff` — skonfigurować albo usunąć; decyzja odłożona do fazy zaawansowanej
+- [x] `README.md` jest pusty — minimalna instrukcja uruchomienia
+- [x] Sprawdzić, czy `psycopg` i `psycopg2-binary` są potrzebne obok `asyncpg`
 
 ---
 

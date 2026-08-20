@@ -23,7 +23,7 @@ class GetItemListQuery:
 
     async def __call__(
         self, user_id: int, receipt_uuid: UUID, limit: int = DEFAULT_LIMIT, offset: int = 0
-    ) -> Iterable[Item]:
+    ) -> tuple[Iterable[Item], int]:
         async with self.user_repository.start_session() as session:
             self.item_repository.use_session(session)
             self.receipt_repository.use_session(session)
@@ -36,4 +36,6 @@ class GetItemListQuery:
             if not receipt:
                 raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Receipt not found")
 
-            return await self.item_repository.get_list(receipt_id=receipt.id, limit=limit, offset=offset)
+            items = await self.item_repository.get_list(receipt_id=receipt.id, limit=limit, offset=offset)
+            total = await self.item_repository.count(receipt_id=receipt.id)
+            return items, total

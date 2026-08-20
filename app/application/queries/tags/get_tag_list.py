@@ -16,7 +16,7 @@ class GetTagListQuery:
         self.user_repository = user_repository
         self.tag_repository = tag_repository
 
-    async def __call__(self, user_id: int, limit: int = DEFAULT_LIMIT, offset: int = 0) -> Iterable[Tag]:
+    async def __call__(self, user_id: int, limit: int = DEFAULT_LIMIT, offset: int = 0) -> tuple[Iterable[Tag], int]:
         async with self.user_repository.start_session() as session:
             self.tag_repository.use_session(session)
 
@@ -24,4 +24,6 @@ class GetTagListQuery:
             if not user:
                 raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
 
-            return await self.tag_repository.get_list(user_id=user_id, limit=limit, offset=offset)
+            tags = await self.tag_repository.get_list(user_id=user_id, limit=limit, offset=offset)
+            total = await self.tag_repository.count(user_id=user_id)
+            return tags, total

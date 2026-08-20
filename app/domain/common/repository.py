@@ -36,6 +36,10 @@ class IBaseRepository(ABC, Generic[T]):
         pass  # pragma: no cover
 
     @abstractmethod
+    async def count(self, **kwargs: Any) -> int:
+        pass  # pragma: no cover
+
+    @abstractmethod
     async def commit(self) -> None:
         pass  # pragma: no cover
 

@@ -1,3 +1,4 @@
+import math
 from typing import (
     Annotated,
     Any,
@@ -11,6 +12,7 @@ from fastapi import Query
 from pydantic import (
     BaseModel,
     ConfigDict,
+    computed_field,
 )
 
 from app.infrastructure.conf import settings
@@ -24,7 +26,13 @@ class PaginatedSchema(BaseModel, Generic[PaginationItemType]):
 
     page: int
     limit: int
+    total: int
     items: Iterable[PaginationItemType]
+
+    @computed_field  # type: ignore[prop-decorator]
+    @property
+    def pages(self) -> int:
+        return math.ceil(self.total / self.limit) if self.limit else 0
 
 
 class PaginatedItems(TypedDict, Generic[PaginationItemType]):
@@ -46,5 +54,5 @@ class PaginationService:
     def offset(self):
         return (self.page - 1) * self.limit
 
-    def get_items(self, items: Iterable[Any]) -> PaginatedSchema:
-        return PaginatedSchema(items=items, page=self.page, limit=self.limit)
+    def get_items(self, items: Iterable[Any], total: int) -> PaginatedSchema:
+        return PaginatedSchema(items=items, page=self.page, limit=self.limit, total=total)

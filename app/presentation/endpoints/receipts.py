@@ -59,8 +59,10 @@ async def get_receipt_list(
     get_receipt_list_query: GetReceiptListQuery = Depends(Provide[AppContainer.queries.get_receipt_list]),
     pagination: PaginationService = Depends(),
 ) -> PaginatedSchema[ReceiptSchema]:
-    receipts = await get_receipt_list_query(user_id=request.user.id, limit=pagination.limit, offset=pagination.offset)
-    return pagination.get_items(receipts)
+    receipts, total = await get_receipt_list_query(
+        user_id=request.user.id, limit=pagination.limit, offset=pagination.offset
+    )
+    return pagination.get_items(receipts, total)
 
 
 @routes.post("/", tags=["Authenticated"], status_code=status.HTTP_201_CREATED)
@@ -108,10 +110,10 @@ async def get_item_list(
     get_item_list_query: GetItemListQuery = Depends(Provide[AppContainer.queries.get_item_list]),
     pagination: PaginationService = Depends(),
 ) -> PaginatedSchema[ItemSchema]:
-    items = await get_item_list_query(
+    items, total = await get_item_list_query(
         user_id=request.user.id, receipt_uuid=receipt_uuid, limit=pagination.limit, offset=pagination.offset
     )
-    return pagination.get_items(items)
+    return pagination.get_items(items, total)
 
 
 @routes.post("/{receipt_uuid}/items/", tags=["Authenticated"], status_code=status.HTTP_201_CREATED)

@@ -50,8 +50,8 @@ async def get_email_template_list(
     ),
     pagination: PaginationService = Depends(),
 ) -> PaginatedSchema[EmailTemplateSchema]:
-    email_templates = await get_email_template_list_query(limit=pagination.limit, offset=pagination.offset)
-    return pagination.get_items(email_templates)
+    email_templates, total = await get_email_template_list_query(limit=pagination.limit, offset=pagination.offset)
+    return pagination.get_items(email_templates, total)
 
 
 @routes.post("/", tags=["Authenticated"], status_code=status.HTTP_201_CREATED)

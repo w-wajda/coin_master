@@ -16,7 +16,9 @@ class GetCompanyListQuery:
         self.user_repository = user_repository
         self.company_repository = company_repository
 
-    async def __call__(self, user_id: int, limit: int = DEFAULT_LIMIT, offset: int = 0) -> Iterable[Company]:
+    async def __call__(
+        self, user_id: int, limit: int = DEFAULT_LIMIT, offset: int = 0
+    ) -> tuple[Iterable[Company], int]:
         async with self.user_repository.start_session() as session:
             self.company_repository.use_session(session)
 
@@ -24,4 +26,6 @@ class GetCompanyListQuery:
             if not user:
                 raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
 
-            return await self.company_repository.get_list(user_id=user_id, limit=limit, offset=offset)
+            companies = await self.company_repository.get_list(user_id=user_id, limit=limit, offset=offset)
+            total = await self.company_repository.count(user_id=user_id)
+            return companies, total

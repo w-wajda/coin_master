@@ -16,7 +16,7 @@ class GetTokenListQuery:
         self.token_repository = token_repository
         self.user_repository = user_repository
 
-    async def __call__(self, user_id: int, limit: int = DEFAULT_LIMIT, offset: int = 0) -> Iterable[Token]:
+    async def __call__(self, user_id: int, limit: int = DEFAULT_LIMIT, offset: int = 0) -> tuple[Iterable[Token], int]:
         async with self.user_repository.start_session() as session:
             self.token_repository.use_session(session)
 
@@ -26,4 +26,5 @@ class GetTokenListQuery:
                 raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
 
             token_list = await self.token_repository.get_list(user_id=user_id, limit=limit, offset=offset)
-            return token_list
+            total = await self.token_repository.count(user_id=user_id)
+            return token_list, total

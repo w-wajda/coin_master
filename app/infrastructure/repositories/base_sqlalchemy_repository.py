@@ -8,7 +8,10 @@ from typing import (
     TypeVar,
 )
 
-from sqlalchemy import select
+from sqlalchemy import (
+    func,
+    select,
+)
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.domain.common.repository import IBaseRepository
@@ -84,6 +87,15 @@ class GenericSQLAlchemyRepository(IBaseRepository, Generic[T]):
 
         cursor = await self.session.execute(statement)
         return cursor.scalars().all()
+
+    async def count(self, **kwargs: Any) -> int:
+        if self.session is None:
+            raise ValueError("Session is not initialized")
+
+        statement = select(func.count()).select_from(self.model).filter_by(**kwargs)
+
+        cursor = await self.session.execute(statement)
+        return cursor.scalar_one()
 
     async def commit(self) -> None:
         if self.session is None:

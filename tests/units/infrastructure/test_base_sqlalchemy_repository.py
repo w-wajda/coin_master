@@ -15,6 +15,7 @@ def repository(session_maker):
         ("get", (1,)),
         ("get_by", ()),
         ("get_list", ()),
+        ("count", ()),
         ("commit", ()),
         ("refresh", (None,)),
         ("all", ()),
@@ -93,6 +94,30 @@ async def test_get_list_respects_limit_and_offset(repository, user):
 
     assert len(first_page) == 2
     assert len(second_page) == 1
+
+
+async def test_count_returns_total_matching_rows(repository, user):
+    async with repository.start_session() as session:
+        for _ in range(3):
+            session.add(TagFactory(user=user))
+
+    async with repository.start_session():
+        total = await repository.count(user_id=user.id)
+
+    assert total == 3
+
+
+async def test_count_ignores_limit_offset_of_get_list(repository, user):
+    async with repository.start_session() as session:
+        for _ in range(3):
+            session.add(TagFactory(user=user))
+
+    async with repository.start_session():
+        page = await repository.get_list(limit=1, offset=0, user_id=user.id)
+        total = await repository.count(user_id=user.id)
+
+    assert len(page) == 1
+    assert total == 3
 
 
 async def test_all_returns_every_row(repository, user):

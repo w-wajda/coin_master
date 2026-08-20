@@ -26,11 +26,13 @@ async def test_get_tag_list_success(query, user_repository, tag_repository):
     user_repository.get.return_value = object()
     tags = [MagicMock(), MagicMock()]
     tag_repository.get_list.return_value = tags
+    tag_repository.count.return_value = 2
 
     result = await query(user_id=1, limit=10, offset=0)
 
-    assert result is tags
+    assert result == (tags, 2)
     tag_repository.get_list.assert_awaited_once_with(user_id=1, limit=10, offset=0)
+    tag_repository.count.assert_awaited_once_with(user_id=1)
 
 
 async def test_get_tag_list_user_not_found(query, user_repository, tag_repository):

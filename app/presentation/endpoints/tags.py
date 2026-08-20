@@ -51,8 +51,8 @@ async def get_tag_list(
     get_tag_list_query: GetTagListQuery = Depends(Provide[AppContainer.queries.get_tag_list]),
     pagination: PaginationService = Depends(),
 ) -> PaginatedSchema[TagSchema]:
-    tags = await get_tag_list_query(user_id=request.user.id, limit=pagination.limit, offset=pagination.offset)
-    return pagination.get_items(tags)
+    tags, total = await get_tag_list_query(user_id=request.user.id, limit=pagination.limit, offset=pagination.offset)
+    return pagination.get_items(tags, total)
 
 
 @routes.post("/", tags=["Authenticated"], status_code=status.HTTP_201_CREATED)

@@ -26,11 +26,13 @@ async def test_get_company_list_success(query, user_repository, company_reposito
     user_repository.get.return_value = object()
     companies = [MagicMock(), MagicMock()]
     company_repository.get_list.return_value = companies
+    company_repository.count.return_value = 2
 
     result = await query(user_id=1, limit=10, offset=0)
 
-    assert result is companies
+    assert result == (companies, 2)
     company_repository.get_list.assert_awaited_once_with(user_id=1, limit=10, offset=0)
+    company_repository.count.assert_awaited_once_with(user_id=1)
 
 
 async def test_get_company_list_user_not_found(query, user_repository, company_repository):

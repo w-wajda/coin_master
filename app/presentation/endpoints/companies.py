@@ -51,8 +51,10 @@ async def get_company_list(
     get_company_list_query: GetCompanyListQuery = Depends(Provide[AppContainer.queries.get_company_list]),
     pagination: PaginationService = Depends(),
 ) -> PaginatedSchema[CompanySchema]:
-    companies = await get_company_list_query(user_id=request.user.id, limit=pagination.limit, offset=pagination.offset)
-    return pagination.get_items(companies)
+    companies, total = await get_company_list_query(
+        user_id=request.user.id, limit=pagination.limit, offset=pagination.offset
+    )
+    return pagination.get_items(companies, total)
 
 
 @routes.post("/", tags=["Authenticated"], status_code=status.HTTP_201_CREATED)

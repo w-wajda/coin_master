@@ -26,11 +26,13 @@ async def test_get_token_list_success(query, token_repository, user_repository):
     user_repository.get.return_value = object()
     tokens = [MagicMock(), MagicMock()]
     token_repository.get_list.return_value = tokens
+    token_repository.count.return_value = 2
 
     result = await query(user_id=1, limit=10, offset=0)
 
-    assert result is tokens
+    assert result == (tokens, 2)
     token_repository.get_list.assert_awaited_once_with(user_id=1, limit=10, offset=0)
+    token_repository.count.assert_awaited_once_with(user_id=1)
 
 
 async def test_get_token_list_user_not_found(query, token_repository, user_repository):

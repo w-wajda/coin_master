@@ -26,11 +26,13 @@ async def test_get_receipt_list_success(query, user_repository, receipt_reposito
     user_repository.get.return_value = object()
     receipts = [MagicMock(), MagicMock()]
     receipt_repository.get_list.return_value = receipts
+    receipt_repository.count.return_value = 2
 
     result = await query(user_id=1, limit=10, offset=0)
 
-    assert result is receipts
+    assert result == (receipts, 2)
     receipt_repository.get_list.assert_awaited_once_with(user_id=1, limit=10, offset=0)
+    receipt_repository.count.assert_awaited_once_with(user_id=1)
 
 
 async def test_get_receipt_list_user_not_found(query, user_repository, receipt_repository):

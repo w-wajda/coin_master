@@ -42,8 +42,10 @@ async def get_token_list(
     get_token_list_query: GetTokenListQuery = Depends(Provide[AppContainer.queries.get_token_list]),
     pagination: PaginationService = Depends(),
 ) -> PaginatedSchema[TokenSchema]:
-    tokens = await get_token_list_query(user_id=request.user.id, limit=pagination.limit, offset=pagination.offset)
-    return pagination.get_items(tokens)
+    tokens, total = await get_token_list_query(
+        user_id=request.user.id, limit=pagination.limit, offset=pagination.offset
+    )
+    return pagination.get_items(tokens, total)
 
 
 @routes.post("/", status_code=status.HTTP_201_CREATED, tags=["Anonymous"])

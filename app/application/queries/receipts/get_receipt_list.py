@@ -16,7 +16,9 @@ class GetReceiptListQuery:
         self.user_repository = user_repository
         self.receipt_repository = receipt_repository
 
-    async def __call__(self, user_id: int, limit: int = DEFAULT_LIMIT, offset: int = 0) -> Iterable[Receipt]:
+    async def __call__(
+        self, user_id: int, limit: int = DEFAULT_LIMIT, offset: int = 0
+    ) -> tuple[Iterable[Receipt], int]:
         async with self.user_repository.start_session() as session:
             self.receipt_repository.use_session(session)
 
@@ -24,4 +26,6 @@ class GetReceiptListQuery:
             if not user:
                 raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
 
-            return await self.receipt_repository.get_list(user_id=user_id, limit=limit, offset=offset)
+            receipts = await self.receipt_repository.get_list(user_id=user_id, limit=limit, offset=offset)
+            total = await self.receipt_repository.count(user_id=user_id)
+            return receipts, total
