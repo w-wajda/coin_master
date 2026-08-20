@@ -438,15 +438,15 @@ Drobiazgi do zrobienia gdzieś w trakcie Fazy 0:
 
 ## Definicja ukończenia Fazy 0
 
-- [ ] `docker compose up` podnosi całość jedną komendą, `/health/` odpowiada
-- [ ] Panel MinIO działa, bucket `coin-master` istnieje i jest **prywatny**
-- [ ] Wszystkie repozytoria są zarejestrowane w kontenerze (K1b zamknięty)
-- [ ] Wszystkie endpointy `/v2/receipts/*` i `/v2/tags/*` odpowiadają poprawnie (K1 zamknięty)
-- [ ] `DELETE /v2/receipts/{uuid}/` zwraca 204 i realnie usuwa (K2 zamknięty)
-- [ ] Brak importów z `sqlalchemy.testing` (K3 zamknięty)
-- [ ] Każda komenda wykonuje się w jednej transakcji (K4 zamknięty)
-- [ ] `Settings` zawiera konfigurację storage'u, `.env.example` w repo (K5 zamknięty)
-- [ ] Pokrycie testami ≥ 90%, testy przechodzą lokalnie i w CI
-- [ ] CI blokuje merge przy czerwonych testach
+- [x] `docker compose up` podnosi całość jedną komendą, `/health/` odpowiada
+- [x] Panel MinIO działa, bucket `coin-master` istnieje i jest **prywatny**
+- [x] Wszystkie repozytoria są zarejestrowane w kontenerze (K1b zamknięty)
+- [x] Wszystkie endpointy `/v2/receipts/*` i `/v2/tags/*` odpowiadają poprawnie (K1 zamknięty)
+- [x] `DELETE /v2/receipts/{uuid}/` zwraca 204 i realnie usuwa (K2 zamknięty)
+- [x] Brak importów z `sqlalchemy.testing` (K3 zamknięty)
+- [x] Każda komenda wykonuje się w jednej transakcji (K4 zamknięty)
+- [x] `Settings` zawiera konfigurację storage'u, `.env.example` w repo (K5 zamknięty)
+- [x] Pokrycie testami ≥ 90%, testy przechodzą lokalnie i w CI
+- [x] CI blokuje merge przy czerwonych testach
 
 **Dopiero po odhaczeniu wszystkiego** → [03_MVP_BACKEND.md](03_MVP_BACKEND.md)
