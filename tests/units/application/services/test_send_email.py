@@ -34,7 +34,7 @@ async def test_send_dispatches_mail_when_template_found(service, email_template_
     )
     service.fast_mail.send_mail.assert_awaited_once()
     message = service.fast_mail.send_mail.call_args.args[0]
-    assert message.recipients == ["user@example.com"]
+    assert [recipient.email for recipient in message.recipients] == ["user@example.com"]
 
 
 async def test_send_skips_when_template_missing(service, email_template_repository):

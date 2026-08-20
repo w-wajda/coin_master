@@ -17,6 +17,6 @@ Panel MinIO (podgląd wgranych plików): http://localhost:9001 (`minioadmin` / `
 ## Testy
 
 ```bash
-poetry install
-poetry run pytest
+uv sync
+uv run pytest
 ```

@@ -10,11 +10,11 @@ ENV PYTHONFAULTHANDLER=1
 ENV PIP_NO_CACHE_DIR=off
 ENV PIP_DISABLE_PIP_VERSION_CHECK=on
 ENV PIP_DEFAULT_TIMEOUT=100
-ENV POETRY_VIRTUALENVS_IN_PROJECT=1
-ENV POETRY_NO_INTERACTION=1
-ENV POETRY_HOME="/opt/poetry"
+ENV UV_PROJECT_ENVIRONMENT="/.venv"
+ENV UV_NO_INTERACTION=1
+ENV UV_LINK_MODE=copy
 ENV VENV_PATH="/.venv"
-ENV PATH="$POETRY_HOME/bin:$VENV_PATH/bin:$PATH"
+ENV PATH="$VENV_PATH/bin:$PATH"
 ENV PYTHONPATH="/app"
 
 
@@ -27,15 +27,15 @@ RUN apt-get update &&\
     groupadd -f -g 11111 app &&\
     useradd -l -u 11111 -g app -d /app -r -m app &&\
     chown -R app:app /app &&\
-    curl -sSL https://install.python-poetry.org | python -
+    curl -LsSf https://astral.sh/uv/install.sh | env UV_INSTALL_DIR="/usr/local/bin" sh
 
 
 FROM base as builder-deps
 
 RUN apt-get install build-essential --no-install-recommends -y
 
-COPY poetry.lock  pyproject.toml  README.md ./
-RUN poetry install --only main --no-root
+COPY uv.lock  pyproject.toml  README.md ./
+RUN uv sync --locked --no-install-project --no-dev
 
 
 FROM base AS runtime

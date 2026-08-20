@@ -1,36 +1,36 @@
 .PONY: run
 run:
-	@python app/main.py
+	@uv run python app/main.py
 
 .PONY: migration
 migration:
-	@alembic revision --autogenerate -m "migration"
+	@uv run alembic revision --autogenerate -m "migration"
 
 .PONY: migrate
 migrate:
-	@alembic upgrade head
+	@uv run alembic upgrade head
 
 .PONY: m-history
 m-history:
-	@alembic history
+	@uv run alembic history
 
 .PONY: m-down
 m-down:
-	@alembic downgrade -1
+	@uv run alembic downgrade -1
 
 .PONY: test
 test:
-	@python -m pytest -v
+	@uv run pytest -v
 
 .PONY: test-x
 test-x:
-	@python -m pytest -x -v
+	@uv run pytest -x -v
 
 .PONY: coverage
 coverage:
-	@coverage run -m pytest
-	@coverage report -m
-	@coverage html
+	@uv run coverage run -m pytest
+	@uv run coverage report -m
+	@uv run coverage html
 	@open htmlcov/index.html
 
 .PONY: db
@@ -39,8 +39,7 @@ db:
 
 .PONY: lint
 lint:
-	black .
-	isort .
-	flake8 .
-	mypy .
-
+	uv run black .
+	uv run isort .
+	uv run flake8 .
+	uv run mypy .

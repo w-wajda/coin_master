@@ -34,31 +34,32 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install poetry
-        run: pipx install poetry
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
 
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-          cache: 'poetry'
 
-      - name: Install poetry dependencies
-        run: poetry install --no-interaction
+      - name: Install dependencies
+        run: uv sync --locked
 
       - name: Lint
         run: |
-          poetry run black --check .
-          poetry run flake8 .
-          poetry run isort --check-only .
+          uv run black --check .
+          uv run flake8 .
+          uv run isort --check-only .
 
       - name: Mypy
         continue-on-error: true
-        run: poetry run mypy .
+        run: uv run mypy .
 
       - name: Pytest
         env:
           DATABASE_URL: "postgresql+asyncpg://postgres:postgres@localhost:5432/postgres"
-        run: poetry run pytest --cov=app --cov-report=term-missing
+        run: uv run pytest --cov=app --cov-report=term-missing
 
 
   release:
@@ -81,7 +82,7 @@ jobs:
           python-version: '3.12'
           cache: 'pip'
 
-      - name: Install poetry dependencies
+      - name: Install python-semantic-release
         run: pip install python-semantic-release
 
       - name: Python Semantic Release
