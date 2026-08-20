@@ -1,6 +1,6 @@
 [project]
 name = "coin-master"
-version = "0.1.0"
+version = "1.0.0"
 description = ""
 authors = [{ name = "Wioletta Wajda", email = "wioletta.wajda@devsoft.pl" }]
 readme = "README.md"
